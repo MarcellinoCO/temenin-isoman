@@ -1,0 +1,238 @@
+{% load static %}
+<nav
+  class="
+    navbar navbar-expand-lg navbar-transparent
+    z-index-3
+    position-absolute
+    top-0
+    my-3
+    w-100
+    shadow-none
+  "
+>
+  <div class="container">
+    <a
+      class="navbar-brand d-flex align-items-center"
+      href="/"
+      rel="tooltip"
+      title="Temenin Isoman"
+      data-placement="bottom"
+      target="_blank"
+    >
+      <img width="24" height="24" src="{% static 'images/logo.png' %}" />
+      <span class="ms-2 fs-6 text-white">TemeninIsoman</span>
+    </a>
+
+    <a
+      href="/"
+      class="
+        btn btn-sm btn-round
+        d-lg-none d-block
+        mb-0
+        ms-auto
+        bg-gradient-primary
+      "
+    >
+      Sign In
+    </a>
+
+    <button
+      class="navbar-toggler ms-2 shadow-none"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navigation"
+      aria-controls="navigation"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon mt-2">
+        <span class="navbar-toggler-bar bar1"></span>
+        <span class="navbar-toggler-bar bar2"></span>
+        <span class="navbar-toggler-bar bar3"></span>
+      </span>
+    </button>
+
+    <div
+      class="collapse navbar-collapse py-lg-0 pt-3 pb-2 w-100"
+      id="navigation"
+    >
+      <ul class="navbar-nav navbar-nav-hover mx-auto">
+        <!-- Isolasi Mandiri: Deteksi Mandiri, Checklist, HappyNotes -->
+        <li class="nav-item dropdown dropdown-hover mx-2">
+          <a
+            class="nav-link d-flex align-items-center ps-2 cursor-pointer"
+            id="dropdownMenuPages"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Isolasi Mandiri
+            <i class="material-icons opacity-6 me-2 text-md">expand_more</i>
+          </a>
+
+          <div
+            class="
+              dropdown-menu dropdown-menu-animation dropdown-md
+              mt-0 mt-lg-3
+              ms-n3
+              p-3
+              border-radius-xl
+            "
+            aria-labelledby="dropdownMenuPages"
+          >
+            <!-- Desktop screens -->
+            <div class="d-none d-lg-block">
+              <a
+                href="/"
+                class="dropdown-item d-flex align-items-center border-radius-md"
+              >
+                <i class="material-icons opacity-6 me-2 text-lg">quiz</i>
+                <span>Deteksi Mandiri</span>
+              </a>
+              <a
+                href="/"
+                class="dropdown-item d-flex align-items-center border-radius-md"
+              >
+                <i class="material-icons opacity-6 me-2 text-lg">check_box</i>
+                <span>Checklist</span>
+              </a>
+              <a
+                href="/"
+                class="dropdown-item d-flex align-items-center border-radius-md"
+              >
+                <i class="material-icons opacity-6 me-2 text-lg">note</i>
+                <span>HappyNotes</span>
+              </a>
+            </div>
+
+            <!-- Mobile screens -->
+            <div class="d-lg-none">
+              <a
+                href="/"
+                class="dropdown-item d-flex align-items-center border-radius-md"
+              >
+                <i class="material-icons opacity-6 me-2 text-lg">quiz</i>
+                <span>Deteksi Mandiri</span>
+              </a>
+              <a
+                href="/"
+                class="dropdown-item d-flex align-items-center border-radius-md"
+              >
+                <i class="material-icons opacity-6 me-2 text-lg">check_box</i>
+                <span>Checklist</span>
+              </a>
+              <a
+                href="/"
+                class="dropdown-item d-flex align-items-center border-radius-md"
+              >
+                <i class="material-icons opacity-6 me-2 text-lg">note</i>
+                <span>HappyNotes</span>
+              </a>
+            </div>
+          </div>
+        </li>
+
+        <!-- COVID-19: Tips and Tricks, Info Bed Capacity, Symptoms and Medicines -->
+        <li class="nav-item dropdown dropdown-hover mx-2">
+          <a
+            class="nav-link d-flex align-items-center ps-2 cursor-pointer"
+            id="dropdownMenuPages"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            COVID-19
+            <i class="material-icons opacity-6 me-2 text-md">expand_more</i>
+          </a>
+
+          <div
+            class="
+              dropdown-menu dropdown-menu-animation dropdown-md
+              mt-0 mt-lg-3
+              ms-n3
+              p-3
+              border-radius-xl
+            "
+            aria-labelledby="dropdownMenuPages"
+          >
+            <!-- Desktop screens -->
+            <div class="d-none d-lg-block">
+              <a
+                href="/"
+                class="dropdown-item d-flex align-items-center border-radius-md"
+              >
+                <i class="material-icons opacity-6 me-2 text-lg">stars</i>
+                <span>Tips and Tricks</span>
+              </a>
+              <a
+                href="/"
+                class="dropdown-item d-flex align-items-center border-radius-md"
+              >
+                <i class="material-icons opacity-6 me-2 text-lg"
+                  >local_pharmacy</i
+                >
+                <span>Symptoms and Medicines</span>
+              </a>
+              <a
+                href="/"
+                class="dropdown-item d-flex align-items-center border-radius-md"
+              >
+                <i class="material-icons opacity-6 me-2 text-lg">single_bed</i>
+                <span>Info Bed Capacity</span>
+              </a>
+            </div>
+
+            <!-- Mobile screens -->
+            <div class="d-lg-none">
+              <a
+                href="/"
+                class="dropdown-item d-flex align-items-center border-radius-md"
+              >
+                <i class="material-icons opacity-6 me-2 text-lg">stars</i>
+                <span>Tips and Tricks</span>
+              </a>
+              <a
+                href="/"
+                class="dropdown-item d-flex align-items-center border-radius-md"
+              >
+                <i class="material-icons opacity-6 me-2 text-lg"
+                  >local_pharmacy</i
+                >
+                <span>Symptoms and Medicines</span>
+              </a>
+              <a
+                href="/"
+                class="dropdown-item d-flex align-items-center border-radius-md"
+              >
+                <i class="material-icons opacity-6 me-2 text-lg">single_bed</i>
+                <span>Info Bed Capacity</span>
+              </a>
+            </div>
+          </div>
+        </li>
+
+        <!-- Emergency contacts -->
+        <li class="nav-item dropdown dropdown-hover mx-2 me-2">
+          <a
+            class="nav-link d-flex align-items-center ps-2 cursor-pointer"
+            id="dropdownMenuPages"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Emergency Contacts
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav d-lg-block d-none">
+        <li class="nav-item">
+          <a
+            href="/"
+            class="btn btn-sm me-1 mb-0 bg-gradient-primary"
+            role="button"
+          >
+            Sign In
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
