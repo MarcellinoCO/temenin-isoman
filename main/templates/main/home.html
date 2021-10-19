@@ -1,11 +1,77 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} 
+{% load static %} 
 
 {% block meta %}
-<title>Hello, world!</title>
-{% endblock meta %}
+<title>Temenin Isoman</title>
+{% endblock meta %} 
 
 {% block content %}
-  <h1>Hello, world!</h1>
-  <p><img src="{% static 'img/django-logo-negative.svg' %}"></p>
+<div
+  class="page-header min-vh-80"
+  style="
+    background-image: url('https://unsplash.com/photos/-VaiKXZs4PA/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjM0NjY1NTM2&force=true&w=2400');
+  "
+>
+  <span class="mask bg-gradient-dark opacity-6"></span>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 mx-auto">
+        <div class="text-center">
+          <img width="128" height="128" src="{% static 'images/logo.png' %}" />
+          <h1 class="mt-4 text-white">Temenin Isoman</h1>
+          <h4 class="fw-normal text-white">
+            Isolasi mandiri shouldn't be lonely<br />
+            Let's accompany those in need
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card card-body shadow-xl mx-3 mx-md-4 mt-n6">
+  <div class="container">
+    <div class="section text-center">
+      <h2 class="title">Your main section here</h2>
+      <p class="mt-4">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis in arcu eu
+        erat malesuada euismod. Morbi hendrerit erat a sem sagittis maximus.
+        Cras commodo aliquam consectetur. Proin pulvinar lectus ut scelerisque
+        egestas. Etiam sit amet vestibulum eros. Nulla quis lacus nibh. Nullam
+        posuere pulvinar ornare. Quisque egestas in nulla vel semper. Fusce
+        tincidunt commodo faucibus. Mauris ipsum neque, mollis at lacus nec,
+        gravida scelerisque justo. Vestibulum mattis lectus eu felis cursus
+        accumsan. Ut aliquet odio quis quam vulputate, sit amet molestie diam
+        porttitor. Integer pulvinar, eros quis ornare consequat, sem sem
+        tincidunt augue, luctus elementum urna lectus nec quam. Quisque iaculis
+        ligula turpis, vitae convallis est facilisis eu. Aenean et tincidunt
+        lorem. Cras sodales diam non tincidunt venenatis. Vestibulum
+        pellentesque tristique turpis, ut tincidunt nisl luctus in. Praesent
+        venenatis aliquam ex, id fringilla augue maximus id. Mauris vestibulum
+        volutpat felis, eu iaculis mauris fermentum euismod. Cras dignissim
+        aliquet eros non blandit. Mauris cursus viverra dui ac bibendum. Ut
+        sagittis orci et libero rutrum rhoncus. Ut felis ex, malesuada pulvinar
+        maximus vitae, mattis at magna. Sed quis consequat velit. Sed mi arcu,
+        imperdiet eu neque eu, consectetur semper nibh. Nullam neque arcu,
+        dapibus nec blandit eget, cursus quis nulla. Vestibulum mollis tellus
+        nec ipsum varius tempus. Cras fringilla ligula dignissim, ultricies diam
+        et, auctor justo. Suspendisse vulputate nibh vitae dolor fringilla
+        suscipit. Etiam vel mauris et massa malesuada efficitur. Pellentesque
+        euismod euismod tellus eu feugiat. Donec volutpat posuere augue, id
+        euismod urna laoreet sit amet. Mauris ut urna a arcu auctor euismod eget
+        at mauris. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+        Nullam viverra vestibulum sapien a lacinia. Quisque tempus rhoncus
+        turpis, in aliquam purus hendrerit id. Donec dignissim vulputate leo
+        quis consequat. Cras sed varius lorem, a feugiat velit. Maecenas commodo
+        dignissim sagittis. Nullam magna ante, pellentesque in pharetra ac,
+        eleifend eget nisi. Morbi vehicula erat non ligula consectetur, ut
+        sagittis nunc scelerisque. Ut non arcu faucibus, pulvinar ante eleifend,
+        feugiat lorem. Proin semper eu est nec pretium. Donec augue elit,
+        ultrices nec aliquam sed, porttitor vitae sapien. Integer ac bibendum
+        neque. Nulla bibendum vehicula leo, vitae finibus eros. Ut eget bibendum
+        quam.
+      </p>
+    </div>
+  </div>
+</div>
 {% endblock content %}
