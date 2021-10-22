@@ -1,0 +1,46 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block meta %}
+<title>Temenin Isoman-Symptomps</title>
+<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+{% endblock meta %} 
+
+{% block navbar %}
+  {% with variant='light' %}
+    {{ block.super }}
+  {% endwith %}
+{% endblock navbar %}
+
+{% block content %}
+<header class="mt-6">
+	<div>
+		<h1>Symptomps and Medicine</h1>
+	</div>
+</header>
+
+<main>
+<ul id="cards">
+{% if obats %} 
+        {% for obat in obats %}
+		<li class="card" >
+			<div class="card__content">
+				<div>
+					<h2>{{ obat.penyakit }}</h2>
+                    <p>{{ obat.penjelasan }}<p>
+                    <p><b>Medicine</b><p>
+                    <p>{{ obat.daftar_obat }}<p>
+				</div>
+				<figure>
+					<img src="https://static.vecteezy.com/system/resources/previews/002/956/512/original/cute-doctor-with-mask-and-stay-safe-sign-vector.jpg" alt="Image description">
+				</figure>
+			</div>
+		</li>
+          {% endfor %}
+{% endif %}
+  </ul>
+</main>
+<aside>
+<span><a href="http://localhost:8000/obat/add/"></a></span>
+</aside>
+{% endblock content %}
