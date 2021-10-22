@@ -5,6 +5,12 @@
 <title>Temenin Isoman</title>
 {% endblock meta %} 
 
+{% block navbar %}
+  {% with variant='transparent' %}
+    {{ block.super }}
+  {% endwith %}
+{% endblock navbar %}
+
 {% block content %}
 <div
   class="page-header min-vh-80"

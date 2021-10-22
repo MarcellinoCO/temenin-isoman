@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{% static 'css/material-kit.css' %}" />
 
     <!-- CSS stylesheet -->
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 
     <!-- Fonts -->
     <link
@@ -55,8 +55,12 @@
   </head>
 
   <body class="user-select-none">
-    {% include 'navbar.html' %} 
-    {% block content %} {% endblock content %} 
+    {% block navbar %}
+      {% include 'navbar.html' with variant=variant %}
+    {% endblock navbar %} 
+
+    {% block content %} {% endblock content%}
+
     {% include 'footer.html' %}
   </body>
 </html>
