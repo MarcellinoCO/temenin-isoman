@@ -1,12 +1,23 @@
 {% load static %}
 <nav
   class="
-    navbar navbar-expand-lg navbar-transparent
+    navbar navbar-expand-lg
+
+    {% if variant == 'dark' %}
+      navbar-dark bg-gradient-dark
+    {% elif variant == 'light' %}
+      navbar-light bg-white
+    {% else %}
+      navbar-transparent
+    {% endif %}
+    
+    container
     z-index-3
     position-absolute
-    top-0
+    top-0 start-0 end-0
     my-3
     w-100
+    border-radius-xl
     shadow-none
   "
 >
@@ -17,10 +28,21 @@
       rel="tooltip"
       title="Temenin Isoman"
       data-placement="bottom"
-      target="_blank"
     >
       <img width="24" height="24" src="{% static 'images/logo.png' %}" />
-      <span class="ms-2 fs-6 text-white">TemeninIsoman</span>
+      <span 
+        class="
+          ms-2 
+          fs-6 
+          {% if variant == 'light' %} 
+            text-black
+          {% else %}
+            text-white
+          {% endif %}
+        "
+      >
+        TemeninIsoman
+      </span>
     </a>
 
     <a
