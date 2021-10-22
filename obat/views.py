@@ -10,16 +10,11 @@ def index(request):
     obats = Obat.objects.all()
     response = {'obats': obats}
     return render(request, 'obat.html', response)
-
+@login_required(login_url='/admin/login/?next=/obat/add')
 def add(request):
-    context ={}
-    form = ObatForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        if request.method == 'POST':
-            return HttpResponseRedirect("/obat")
-    context['form']= form
-    return render(request, "form.html", context)
+    obats = Obat.objects.all()
+    response = {'obats': obats}
+    return render(request, 'form.html', response)
 
 def json(request):
     obats = Obat.objects.all()

@@ -72,7 +72,7 @@
 
 body {
 	text-align: center;
-	background: #7F7C82;
+	background: #E4D8DC;
 	font-size: calc(1em + 0.5vw);
 }
 
@@ -138,6 +138,15 @@ header {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+}
+
+.btn {
+	background: rgb(188 87 36);
+	color: rgb(255 255 255);
+	text-decoration: none;
+	display: inline-block;
+	padding: 1em;
+	border-radius: 0.25em;
 }
 
 aside {

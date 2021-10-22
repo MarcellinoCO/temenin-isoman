@@ -3,11 +3,12 @@
 
 {% block meta %}
 <title>Temenin Isoman-Symptomps</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="{% static 'css/base.css' %}" />
 {% endblock meta %} 
 
 {% block navbar %}
-  {% with variant='light' %}
+  {% with variant='dark' %}
     {{ block.super }}
   {% endwith %}
 {% endblock navbar %}
