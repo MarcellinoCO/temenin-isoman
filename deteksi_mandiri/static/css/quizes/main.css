@@ -1,0 +1,38 @@
+.main-content {
+  text-align: center;
+}
+
+.background {
+  top: 0;
+  height: 80px;
+  width: 100%;
+  background-color: #333;
+}
+
+.content {
+  padding-top: 1em;
+  padding-left: 8em;
+  padding-right: 8em;
+  margin-top: 80px;
+}
+
+#modal-body-confirm {
+  text-align: left;
+}
+
+.disp_none {
+  display: none;
+}
+
+.text-muted {
+  font-size: 1rem;
+}
+
+.modal-body {
+  font-size: 1.1rem;
+}
+
+.sub-content {
+  display: flex;
+  flex-direction: column;
+}
