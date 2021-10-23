@@ -5,11 +5,14 @@ from .models import *
 admin.site.register(Result)
 admin.site.register(Quiz)
 
+
 class AnswerInLine(admin.TabularInline):
-	model = Answer
+    model = Answer
+
 
 class QuestionAdmin(admin.ModelAdmin):
-	inlines = [AnswerInLine]
+    inlines = [AnswerInLine]
+
 
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Answer)

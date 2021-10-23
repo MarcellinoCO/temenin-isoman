@@ -1,23 +1,20 @@
-{% extends 'base.html' %} 
-{% load static %} 
+{% extends 'base.html' %}
+{% load static %}
 
 {% block meta %}
 <title>Temenin Isoman</title>
-{% endblock meta %} 
+{% endblock meta %}
 
 {% block navbar %}
-  {% with variant='transparent' %}
+  {% with variant='light' %}
     {{ block.super }}
   {% endwith %}
 {% endblock navbar %}
 
 {% block content %}
-<div
-  class="page-header min-vh-80"
-  style="
+<div class="page-header min-vh-80" style="
     background-image: url('https://unsplash.com/photos/-VaiKXZs4PA/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjM0NjY1NTM2&force=true&w=2400');
-  "
->
+  ">
   <span class="mask opacity-6 bg-gradient-dark"></span>
   <div class="container">
     <div class="row">
