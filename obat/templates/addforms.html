@@ -1,0 +1,92 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block meta %}
+<title>Temenin Isoman-Symptomps</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+{% endblock meta %} 
+
+{% block navbar %}
+  {% with variant='light' %}
+    {{ block.super }}
+  {% endwith %}
+{% endblock navbar %}
+
+{% block content %}
+<style>
+aside span a:before,
+aside span a:after{
+    content: "ADD";
+}
+textarea,input[type=text] {
+  width: 80%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+}
+input[type=text]{
+  height: 50px;
+}
+textarea:focus { 
+	outline: none !important;
+	border:2px solid #7c44bd;
+    box-shadow: 0 0 10px #7600ff;
+}
+
+input[type=text]:focus { 
+	outline: none !important;
+	border:2px solid #7c44bd;
+    box-shadow: 0 0 10px #7600ff;
+}
+
+input[type=submit] {
+  width: 20%;
+  font-size: 16px;
+  background-color: black;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  transition: 0.5s;
+  box-shadow: 0 0 10px #7600ff;
+}
+</style>
+<header class="mt-6">
+	<div>
+		<h1>Symptomps And Medicine Forms</h1>
+	</div>
+</header>
+
+<main>
+<ul id="cards">
+		<li class="card" >
+			<div class="card__content">
+				  <form action = "" method = "POST">
+          {% csrf_token %}
+            <label for="penyakit">Nama Penyakit:</label><br>
+	          <input type="text" id="penyakit" name="penyakit"><br>
+            <label for="penjelasan">Penjelasan:</label><br>
+            <textarea id = "penjelasan" name = "penjelasan" ></textarea><br>
+            <label for="daftar_obat">Obat:</label><br>
+            <textarea id = "daftar_obat" name = "daftar_obat" ></textarea><br>
+            <input type="submit" value="Submit">
+        </form>
+				<figure>
+					<img src="https://static.vecteezy.com/system/resources/previews/002/424/813/non_2x/cute-kid-character-thinking-with-question-mark-isolated-vector.jpg" alt="Image description">
+				</figure>
+			</div>
+		</li>
+  </ul>
+</main>
+{% endblock content %}
