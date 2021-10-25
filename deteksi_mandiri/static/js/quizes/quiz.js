@@ -1,5 +1,3 @@
-console.log("Hello World from Quiz");
-
 window.onload = function () {
   const url = window.location.href;
   const quizBox = document.getElementById("quiz-box");
@@ -9,11 +7,7 @@ window.onload = function () {
   let stopTimer = false;
 
   const activateTimer = (time) => {
-    if (time.toString().length < 2) {
-      timerBox.innerHTML = `<b>0${time}:00</b>`;
-    } else {
-      timerBox.innerHTML = `<b>${time}:00</b>`;
-    }
+    timerBox.innerHTML = `<b>${("00" + time).slice(-2)}:00</b>`;
 
     let minutes = time - 1;
     let seconds = 60;
@@ -28,22 +22,14 @@ window.onload = function () {
         minutes -= 1;
       }
 
-      if (minutes.toString().length < 2) {
-        displayMinutes = "0" + minutes;
-      } else {
-        displayMinutes = minutes;
-      }
+      displayMinutes = ("00" + minutes).slice(-2);
 
       if (minutes < 0) {
         displaySeconds = 0;
         displayMinutes = 0;
       }
 
-      if (seconds.toString().length < 2) {
-        displaySeconds = "0" + seconds;
-      } else {
-        displaySeconds = seconds;
-      }
+      displaySeconds = ("00" + seconds).slice(-2);
 
       if (minutes <= 0 && seconds <= 0) {
         setTimeout(() => {
@@ -73,8 +59,7 @@ window.onload = function () {
       data.forEach((el) => {
         for (const [question, answers] of Object.entries(el)) {
           quizBox.innerHTML += `
-						<hr>
-						<div class ="mb-1 questions">
+						<div class="mb-1 questions">
 							<b> ${question} </b>
 						</div>
 					`;
@@ -82,7 +67,12 @@ window.onload = function () {
           answers.forEach((answer) => {
             quizBox.innerHTML += `
 							<div class="form-field">
-								<input type="radio" class="ans" id="${question}-${answer}" name="${question}" value="${answer}"></input>
+								<input 
+                  type="radio" 
+                  class="answer" 
+                  id="${question}-${answer}" 
+                  name="${question}" 
+                  value="${answer}" />
 								<label for="${question}-${answer}">${answer}</label>
 							</div>
 						`;
@@ -101,7 +91,7 @@ window.onload = function () {
   const csrf = document.getElementsByName("csrfmiddlewaretoken");
   const sendData = (truth) => {
     const data = {};
-    const elements = [...document.getElementsByClassName("ans")];
+    const elements = [...document.getElementsByClassName("answer")];
 
     data["csrfmiddlewaretoken"] = csrf[0].value;
     elements.forEach((el) => {
@@ -124,9 +114,7 @@ window.onload = function () {
           stopTimer = true;
           const results = response.results;
           quizForm.classList.add("disp_none");
-          document
-            .getElementById("score-to-pass")
-            .classList.remove("disp_none");
+          document.getElementById("score-to-pass").classList.remove("d-none");
           scoreBox.innerHTML = `${
             response.passed == "True"
               ? "Congratulations, no symptoms associated with COVID-19"
