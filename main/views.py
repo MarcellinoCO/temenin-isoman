@@ -1,41 +1,39 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, Group
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+
 from .forms import CreateUserForm
 from .decorators import *
 
 
-# showing homepage
+# Show home page.
 def home(request):
-    return render(request, 'main/home.html')
+    return render(request, 'home.html')
 
 
-# handling sign up form and create user with a spesific role (group)
+# Handle sign up form and create User with a spesific role (group).
 def signup_user(request):
     form = CreateUserForm()
-
     content = {}
 
-    # exexuted when user submit form
+    # Executed when User submit the form.
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         role = request.POST.get('as')
 
-        # executed when form is valid
+        # Executed when form is valid.
         if form.is_valid():
-
-            # save user and redirect user to login pages
+            # Save User and redirect User to login pages.
             form.save()
 
-            # getting user and groups object
+            # Get User and Groups object
             username = form.cleaned_data.get('username')
             user = User.objects.get(username=username)
             common_user = Group.objects.get(name="common_user")
             fasilitas_kesehatan = Group.objects.get(name="fasilitas_kesehatan")
-            print(role)
-            # Aadding group
+
+            # Add coresponding group.
             if role == "Faskes":
                 user.groups.add(fasilitas_kesehatan)
                 user.is_staff = True
@@ -44,50 +42,46 @@ def signup_user(request):
                 user.groups.add(common_user)
 
             messages.success(request, 'Account was created for ' + username)
-            return redirect('/log-in/')
+            return redirect('/login/')
 
-        # exexuted when form is not valid
+        # Executed when form is not valid. Redirect User back to signup page.
         else:
-
-            # redirect user back to sign up page
             messages.success(request, 'Form is not valid. Try again!')
-            return redirect('/sign-up/')
+            return redirect('/signup/')
 
-    # render signup.html
+    # Render signup.html.
     content['form'] = form
-    return render(request, 'main/signup.html', content)
+    return render(request, 'signup.html', content)
 
 
-# handling log in form and authenticate someone as a user
+# Handling login form and authenticate someone as a User.
 def login_user(request):
-
-    # excecuted when user submiting form
+    # Excecuted when User submit the form.
     if request.method == 'POST':
-
-        # authenticating user based on username and password
+        # Authenticate User based on username and password.
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
 
-        # executed when user if valid
+        # Executed when User is valid. Redirect to home page.
         if user is not None:
             login(request, user)
             return redirect('/')
 
-        # excecuted when user is not valid
+        # Executed when User is not valid. Redirect to login page.
         else:
             messages.success(request, 'There was an error Loging In. Try again!')
-            return redirect('/log-in/')
+            return redirect('/login/')
 
-    # rendering login.html
+    # Rendering login.html.
     else:
-        return render(request, 'main/login.html', {})
+        return render(request, 'login.html', {})
 
 
-# handling log out
+# Handle User log out.
 def logout_user(request):
     logout(request)
 
-    # redirect to login-page
+    # Redirect to login page.
     messages.success(request, 'You Have been logged out :D')
-    return redirect('/log-in/')
+    return redirect('/login/')
