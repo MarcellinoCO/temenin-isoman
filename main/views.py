@@ -34,14 +34,14 @@ def signup_user(request):
             user = User.objects.get(username=username)
             common_user = Group.objects.get(name="common_user")
             fasilitas_kesehatan = Group.objects.get(name="fasilitas_kesehatan")
-
+            print(role)
             # Aadding group
-            if role[0] == 'User':
-                user.groups.add(common_user)
-            else:
+            if role == "Faskes":
                 user.groups.add(fasilitas_kesehatan)
                 user.is_staff = True
                 user.save()
+            else:
+                user.groups.add(common_user)
 
             messages.success(request, 'Account was created for ' + username)
             return redirect('/log-in/')
@@ -76,8 +76,7 @@ def login_user(request):
 
         # excecuted when user is not valid
         else:
-            messages.success(
-                request, 'There was an error Loging In. Try again!')
+            messages.success(request, 'There was an error Loging In. Try again!')
             return redirect('/log-in/')
 
     # rendering login.html
@@ -89,5 +88,6 @@ def login_user(request):
 def logout_user(request):
     logout(request)
 
-    # redirect to mainpage
-    return redirect('/')
+    # redirect to login-page
+    messages.success(request, 'You Have been logged out :D')
+    return redirect('/log-in/')
