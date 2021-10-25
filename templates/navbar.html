@@ -234,6 +234,7 @@
         <!-- Emergency contacts -->
         <li class="nav-item dropdown dropdown-hover mx-2 me-2">
           <a
+            href="/"
             class="nav-link d-flex align-items-center ps-2 cursor-pointer"
             id="dropdownMenuPages"
             data-bs-toggle="dropdown"
@@ -244,17 +245,33 @@
         </li>
       </ul>
 
-      <ul class="navbar-nav d-lg-block d-none">
-        <li class="nav-item">
-          <a
-            href="/"
-            class="btn btn-sm me-1 mb-0 bg-gradient-primary"
-            role="button"
-          >
-            Sign In
-          </a>
-        </li>
-      </ul>
+      {% if user.is_authenticated %}
+        <ul class="navbar-nav d-lg-block d-none">
+          <li class="nav-item">
+            <a
+              href="/log-out/"
+              class="btn btn-sm me-1 mb-0 bg-gradient-primary"
+              role="button"
+            >
+              Logout
+            </a>
+          </li>
+        </ul>
+
+      {% else %}
+        <ul class="navbar-nav d-lg-block d-none">
+          <li class="nav-item">
+            <a
+              href="/log-in/"
+              class="btn btn-sm me-1 mb-0 bg-gradient-primary"
+              role="button"
+            >
+              Login
+            </a>
+          </li>
+        </ul>
+      {% endif %}
+      
     </div>
   </div>
 </nav>

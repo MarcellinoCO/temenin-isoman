@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Temenin Isoman</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+{% endblock meta %}
+
+{% block navbar %} 
+  {% with variant='dark' %} 
+    {{ block.super }} 
+  {% endwith %} 
+{% endblock navbar %} 
+
+{% block content %}
+<div class="container">
+	<div class="sub-container">		
+		{% if messages %}
+			{% for message in messages %}
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				{{ message }}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label=""Close></button>
+				</div>
+			{% endfor %}
+		{% endif %}
+		<div class="h1 title">
+			SIGN UP
+		</div>
+		<form action="" method="POST">
+			{% csrf_token %}
+				<div class="mb-1">
+					<label for="id_username" class="form-label">Username</label>
+					<input type="text" name="username" class="form-control" id="id_username" required placeholder="Enter your username">
+				</div>
+				<div class="mb-1">
+					<label for="id_email" class="form-label">Email Addres</label>
+					<input type="email" name="email" class="form-control" id="id_email" required placeholder="Enter your email address">
+				</div>
+				<div class="mb-1">
+					<label for="select" class="form-label">Sign-up as</label>
+					<select class="form-select form-control" name ="as" id="select" aria-label="Default select example">
+						<option selected>Select your role</option>
+						<option value="User">User</option>
+						<option value="Faskes">Faskes</option>
+					</select>
+				</div>	
+				<div class="mb-1">
+					<label for="id_password1" class="form-label">Password</label>
+					<input type="password" name="password1" class="form-control" id="id_password1" required placeholder="Enter your password">
+				</div>
+				<div class="mb-1">
+					<label for="id_password2" class="form-label">Confirmation Password</label>
+					<input type="password" name="password2" class="form-control" id="id_password2" required placeholder="Confirm your password">
+				</div>	
+				<p>Already have an account? <a href="/log-in/">Log In</a></p>
+				<input type="submit" class="btn btn-primary">
+		</form>
+	</div>
+</div>
+{% endblock %}
