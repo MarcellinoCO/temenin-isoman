@@ -82,6 +82,6 @@ def login_user(request):
 def logout_user(request):
     logout(request)
 
-    # Redirect to login page.
+    # Redirect to home page.
     messages.success(request, 'You Have been logged out :D')
-    return redirect('/login/')
+    return redirect('/')

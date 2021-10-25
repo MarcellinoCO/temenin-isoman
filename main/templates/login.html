@@ -13,35 +13,48 @@
 {% endblock navbar %} 
 
 {% block content %}
-<div class="container">
+<div class="container w-lg-50">
 	<div class="sub-container">
 		{% if messages %}
 			{% for message in messages %}			
 				<div class="alert alert-info alert-dismissible fade show" role="alert">
-					{{ message }}
-					<button type="button" class="btn btn-close" data-bs-dismiss="alert" aria-label=""Close></button>
+					<span class="alert-text">{{ message }}</span>
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
 				</div>
 			{% endfor %}
 		{% endif %}
-		<div class="h1 title">
-			LOG IN
-		</div>
-		<form action="" method="POST">
+
+		<h1 class="text-center">LOG IN</h1>
+
+		<form class="d-flex flex-column mt-4" action="" method="POST">
 			{% csrf_token %}
-			<div class="mb-1">
-			    <label for="username" class="form-label">username</label>
-			    <input type="text" name="username" class="form-control" id="username" aria-describedby="emailHelp">
+
+			<div class="input-group input-group-static">
+				<label>Username</label>
+				<input 
+					type="text" 
+					name="username"
+					class="form-control" 
+					placeholder="Enter your username"
+					required />
 			</div>
-			<div class="mb-1">
-			    <label for="password" class="form-label">Password</label>
-			    <input type="password" name="password" class="form-control" id="password">
+
+			<div class="input-group input-group-static mt-3">
+				<label>Password</label>
+				<input 
+					type="password" 
+					name="password" 
+					class="form-control"
+					placeholder="Enter your password"
+					required />
 			</div>
-			<div class="mb-1">
-				<p>Don't have an account? <a href="/sign-up/">Sign Up</a></p>
-			</div>
-			<div class="mb-1">
-				<button type="submit" class="btn btn-primary">Log In</button>
-			</div>
+
+			<p class="align-self-center mt-4">
+				Don't have an account? <a href="/signup/">Sign Up</a>
+			</p>
+			<button type="submit" class="btn btn-primary">Log In</button>
 		</form>
 	</div>
 </div>
