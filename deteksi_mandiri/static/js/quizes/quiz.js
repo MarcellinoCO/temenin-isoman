@@ -4,7 +4,9 @@ window.onload = function () {
   const scoreBox = document.getElementById("score-box");
   const resultBox = document.getElementById("result-box");
   const timerBox = document.getElementById("timer");
+
   let stopTimer = false;
+  let isSubmitted = false;
 
   const activateTimer = (time) => {
     timerBox.innerHTML = `<b>${("00" + time).slice(-2)}:00</b>`;
@@ -90,16 +92,23 @@ window.onload = function () {
   const quizForm = document.getElementById("quiz-form");
   const csrf = document.getElementsByName("csrfmiddlewaretoken");
   const sendData = (truth) => {
+    // Restrict user to submit multiple times consecutively.
+    if (isSubmitted) {
+      alert("Quiz already submitted!")
+      return;
+    }
+    isSubmitted = true;
+
     const data = {};
     const elements = [...document.getElementsByClassName("answer")];
 
     data["csrfmiddlewaretoken"] = csrf[0].value;
-    elements.forEach((el) => {
-      if (el.checked) {
-        data[el.name] = el.value;
+    elements.forEach((element) => {
+      if (element.checked) {
+        data[element.name] = element.value;
       } else {
-        if (!data[el.name]) {
-          data[el.name] = null;
+        if (!data[element.name]) {
+          data[element.name] = null;
         }
       }
     });
@@ -113,8 +122,10 @@ window.onload = function () {
         if (response.full == "True" || truth) {
           stopTimer = true;
           const results = response.results;
+
           quizForm.classList.add("disp_none");
           document.getElementById("score-to-pass").classList.remove("d-none");
+
           scoreBox.innerHTML = `${
             response.passed == "True"
               ? "Congratulations, no symptoms associated with COVID-19"
@@ -125,6 +136,7 @@ window.onload = function () {
             const restDiv = document.createElement("div");
             for (const [question, resp] of Object.entries(res)) {
               restDiv.innerHTML += question;
+              
               const cls = ["p-3", "h6", "container", "text-white"];
               restDiv.classList.add(...cls);
 

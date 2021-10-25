@@ -1,11 +1,9 @@
 from django.shortcuts import render
-from .models import *
 from django.views.generic import ListView
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from .models import *
 
-
-# Create your views here.
 
 class QuizListView(ListView):
     model = Quiz
@@ -15,7 +13,7 @@ class QuizListView(ListView):
 @login_required(login_url='/admin/login/')
 def quiz_view(request, pk):
     quiz = Quiz.objects.get(pk=pk)
-    return render(request, 'quizes/quiz.html', {'obj': quiz})
+    return render(request, 'quizes/quiz.html', {'quiz': quiz})
 
 
 @login_required(login_url='/admin/login/')
@@ -23,11 +21,11 @@ def quiz_data_view(request, pk):
     quiz = Quiz.objects.get(pk=pk)
 
     questions = []
-    for q in quiz.get_questions():
+    for question in quiz.get_questions():
         answers = []
-        for a in q.get_answers():
-            answers.append(a.text)
-        questions.append({str(q): answers})
+        for answer in question.get_answers():
+            answers.append(answer.text)
+        questions.append({str(question): answers})
 
     return JsonResponse({
         'data': questions,
@@ -37,66 +35,82 @@ def quiz_data_view(request, pk):
 
 @login_required(login_url='/admin/login/')
 def save_quiz_view(request, pk):
-    # print(request.POST)
-    if(request.is_ajax()):
+    if request.is_ajax():
         questions = []
         data = request.POST
         data_ = dict(data.lists())
-        print(data)
-        print(data_)
 
         data_.pop('csrfmiddlewaretoken')
 
-        for k in data_.keys():
-            print('key: ', k)
-            question = Question.objects.get(text=k)
+        for key in data_.keys():
+            question = Question.objects.get(text=key)
             questions.append(question)
-
-        print(questions)
 
         user = request.user
         quiz = Quiz.objects.get(pk=pk)
 
+        multiplier = 100 / quiz.number_of_questions
         score = 0
-        multiplier = 100/quiz.number_of_questions
         results = []
         correct_answer = None
         full = True
 
-        for q in questions:
-            a_selected = request.POST.get(q.text)
+        for question in questions:
+            answer_selected = request.POST.get(question.text)
 
-            if(a_selected != ""):
+            if answer_selected != "":
                 truth = False
-                question_answer = Answer.objects.filter(question=q)
-                for a in question_answer:
-                    if a_selected == a.text and (not truth):
-                        if a.correct:
+                question_answer = Answer.objects.filter(question=question)
+
+                for answer in question_answer:
+                    if answer_selected == answer.text and (not truth):
+                        if answer.correct:
                             score += 1
-                            correct_answer = a.text
-                            results.append(
-                                {str(q): {'correct_answer': correct_answer, 'answered': a_selected}})
+                            correct_answer = answer.text
+                            results.append({
+                                str(question): {
+                                    'correct_answer': correct_answer,
+                                    'answered': answer_selected
+                                }})
                             truth = True
                     else:
-                        if a.correct:
-                            correct_answer = a.text
+                        if answer.correct:
+                            correct_answer = answer.text
 
                 if not truth:
-                    results.append(
-                        {str(q): {'correct_answer': correct_answer, 'answered': a_selected}})
+                    results.append({
+                        str(question): {
+                            'correct_answer': correct_answer,
+                            'answered': answer_selected
+                        }})
 
             else:
-                results.append({str(q): 'not-answered'})
+                results.append({str(question): 'not-answered'})
                 full = False
 
-        score_ = score*multiplier
+        score_ = score * multiplier
 
         if full:
             Result.objects.create(quiz=quiz, user=user, skor=score_)
 
             if score_ >= quiz.required_score_to_pass:
-                return JsonResponse({'passed': "True", 'score': score_, 'results': results, 'full': "True"})
+                return JsonResponse({
+                    'passed': "True",
+                    'score': score_,
+                    'results': results,
+                    'full': "True"
+                })
             else:
-                return JsonResponse({'passed': "False", 'score': score_, 'results': results, 'full': "True"})
+                return JsonResponse({
+                    'passed': "False",
+                    'score': score_,
+                    'results': results,
+                    'full': "True"
+                })
         else:
-            return JsonResponse({'passed': "False", 'score': score_, 'results': results, 'full': "False"})
+            return JsonResponse({
+                'passed': "False",
+                'score': score_,
+                'results': results,
+                'full': "False"
+            })

@@ -2,7 +2,7 @@
 {% load static %} 
 
 {% block meta %}
-<title>{{ obj.name }}</title>
+<title>{{ quiz.name }}</title>
 <link 
   rel="stylesheet" 
   type="text/css" 
@@ -21,7 +21,7 @@
   <div class="content">
     <div class="row">
       <div class="text-start" style="width: 85%">
-        <p class="title"><b>{{ obj.name }}</b></p>
+        <p class="title"><b>{{ quiz.name }}</b></p>
       </div>
       <div class="text-end" style="width: 15%; font-size: 1.5rem">
         <p id="timer">countdown</p>
@@ -38,7 +38,7 @@
 
     <div class="result">
       <p id="score-to-pass" class="info d-none">
-        Score to pass: {{ obj.required_score_to_pass }}
+        Score to pass: {{ quiz.required_score_to_pass }}
       </p>
       <div id="score-box" class="info"></div>
       <div id="result-box"></div>

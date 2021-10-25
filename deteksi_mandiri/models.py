@@ -1,16 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
-
 
 class Quiz(models.Model):
     name = models.CharField(max_length=100)
     topic = models.CharField(max_length=100)
     number_of_questions = models.IntegerField()
-    time = models.IntegerField(help_text="durations of the quiz in minutes")
+    time = models.IntegerField(help_text="Duration of the Quiz in minutes")
     required_score_to_pass = models.IntegerField(
-        help_text="required score to pass the test in %")
+        help_text="Required score to pass the test")
 
     def __str__(self):
         return f"{self.name}-{self.topic}"
@@ -40,7 +38,7 @@ class Answer(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"question : {self.question.text}, answer : {self.text}, correct : {self.correct}"
+        return f"Question : {self.question.text}, Answer : {self.text}, Correct : {self.correct}"
 
 
 class Result(models.Model):
