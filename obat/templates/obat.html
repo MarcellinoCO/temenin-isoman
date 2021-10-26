@@ -41,7 +41,10 @@
 {% endif %}
   </ul>
 </main>
+{% if user.is_authenticated %}
 <aside>
 <span><a href="/obat/add/"></a></span>
 </aside>
+{% else %}
+{% endif %}
 {% endblock content %}
