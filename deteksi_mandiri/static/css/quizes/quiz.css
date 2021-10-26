@@ -1,0 +1,43 @@
+.background {
+  top: 0;
+  height: 80px;
+  width: 100%;
+  background-color: #333;
+}
+
+.content {
+  padding-top: 1em;
+  padding-left: 8em;
+  padding-right: 8em;
+  margin-top: 80px;
+}
+
+.title {
+  text-align: left;
+  font-size: 35px;
+  font-weight: bolder;
+  color: #e91e63;
+}
+
+.info {
+  font-size: 15px;
+  font-weight: bolder;
+}
+
+#timer {
+  margin-top: 0.6rem;
+  margin-bottom: auto;
+  font-size: 1.5rem;
+}
+
+#result-box {
+  margin-top: 1.7em;
+}
+
+.questions {
+  font-size: 1.2rem;
+}
+
+.answer {
+  font-size: 1.1rem;
+}
