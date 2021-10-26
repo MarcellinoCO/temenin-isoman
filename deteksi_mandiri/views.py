@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
@@ -15,12 +15,18 @@ def deteksi_mandiri_view(request):
 
 
 #display current quiz
-@allowed_users(allowed_roles=['common_user', 'fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/',message='You need login to start this assessment!')
+# @allowed_users(allowed_roles=['common_user', 'fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/',message='You need login to start this assessment!')
 def quiz_view(request, pk):
-    quiz = Quiz.objects.get(pk=pk)
+    if pk == 'delete-quiz' :
+        quiz = Quiz.objects.all()
 
-    #return render
-    return render(request, 'quizes/quiz.html', {'obj': quiz})
+        return delete_quiz(request)
+    else:
+    
+        quiz = Quiz.objects.get(pk=pk)
+
+        #return render
+        return render(request, 'quizes/quiz.html', {'obj': quiz})
 
 
 #display all quiz questions and quiz answer
@@ -149,3 +155,35 @@ def save_quiz_view(request, pk):
         #if not, state full as false and send data
         else:
             return JsonResponse({'quiz': quiz.name, 'passed': "False", 'score': score, 'results': results, 'full': "False"})
+
+
+# handling log in form and authenticate someone as a user
+def delete_quiz(request):
+    quizs = Quiz.objects.all()
+
+    # excecuted when user submiting form
+    if request.method == 'POST':
+        # print(request.POST)
+        # # authenticating user based on username and password
+        quiz_name = request.POST['quiz']
+        quiz_obj = Quiz.objects.filter(name=quiz_name)
+
+        print(quiz_name)
+        print(quiz_obj)
+
+        # # executed when user if valid
+        # if quiz_obj is not None:
+        #     quiz_obj.delete()
+        #     messages.success(request, '{quiz_name} has been deleted!')
+
+        #     return redirect('/delete-quiz/')
+
+        # # excecuted when user is not valid
+        # else:
+            # messages.success(request, 'Choose the quiz name that want to be deleted!')
+        return redirect('/deteksi-mandiri/delete-quiz/')
+
+    # rendering login.html
+    else:
+        print("else")
+        return render(request, 'quizes/deletequiz.html', {'quizs' : quizs})

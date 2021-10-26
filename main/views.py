@@ -35,6 +35,7 @@ def signup_user(request):
             common_user = Group.objects.get(name="common_user")
             fasilitas_kesehatan = Group.objects.get(name="fasilitas_kesehatan")
             print(role)
+            
             # Aadding group
             if role == "Faskes":
                 user.groups.add(fasilitas_kesehatan)

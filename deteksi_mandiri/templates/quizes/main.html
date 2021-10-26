@@ -4,7 +4,7 @@
 {% block meta%}
 <title>Deteksi Mandiri</title>
 <link rel="stylesheet" type="text/css" href="{% static 'css/quizes/main.css' %}">
-<script type="text/javascript" src="{% static 'js/quizes/main.js'%}"></script>
+<script type="text/javascript" src="{% static 'js/quizes/main.js' %}"></script>
 {% endblock %} 
 
 {% block navbar %} 
@@ -47,20 +47,41 @@
         <hr>
         <div class="sub-content">
             {% for quiz in quizs %}
-            <div class="wrapper">
-                <button 
-                    class="btn btn-link modal-button btn-primary quiz-list-btn" 
-                    data-pk="{{quiz.pk}}" 
-                    data-quiz="{{quiz.name}}" 
-                    data-question="{{quiz.number_of_questions}}" 
-                    data-time="{{quiz.time}}" 
-                    data-pass="{{quiz.required_score_to_pass}}" data-bs-toggle="modal" 
-                    data-bs-target="#quizStartModel">
-    				{{quiz.name}}
-				</button>
-            </div>
+                <div class="wrapper">
+                    <button 
+                        class="btn btn-link modal-button btn-primary quiz-list-btn" 
+                        data-pk="{{quiz.pk}}" 
+                        data-quiz="{{quiz.name}}" 
+                        data-question="{{quiz.number_of_questions}}" 
+                        data-time="{{quiz.time}}" 
+                        data-pass="{{quiz.required_score_to_pass}}" data-bs-toggle="modal" 
+                        data-bs-target="#quizStartModel">
+        				{{quiz.name}}
+    				</button>
+                </div>
+                <div class="wrapper">
+                    <!-- {% if user.is_staff %}
+                        <button 
+                            class="edit crug btn btn-link edit-btn btn-info quiz-list-btn" 
+                            data-pk="{{quiz.pk}}" 
+                            data-quiz="{{quiz.name}}" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#quizStartModel">
+                            Edit
+                        </button>
+                        <button
+                            class="delete crug btn btn-link delete-btn btn-danger quiz-list-btn" 
+                            data-pk="{{quiz.pk}}" 
+                            data-quiz="{{quiz.name}}" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#quizStartModel">
+                            Delete
+                        </button>
+                    {% endif %} -->
+                </div>
             {% endfor %}
         </div>
+        <a href="/deteksi-mandiri/delete-quiz/" class="btn btn-primary">Delete Quiz</a>
     </div>
 </div>
 {% endblock %}

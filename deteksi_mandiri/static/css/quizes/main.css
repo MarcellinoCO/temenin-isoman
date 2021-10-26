@@ -37,3 +37,15 @@
   color: black;
   font-weight: bold;
 }
+
+.edit, .crug {
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.delete, .crug {
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}

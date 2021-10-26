@@ -6,6 +6,7 @@ window.onload = function () {
   const startBtn = document.getElementById("start-button");
   const modalBody = document.getElementById("modal-body-confirm");
   const url = window.location.href;
+  const deleteBtn = document.getElementById("delete-quiz");
 
   //looping all modalBtn that contain quiz data
   modalBtns.forEach((modalBtn) =>
@@ -36,4 +37,9 @@ window.onload = function () {
       });
     })
   );
+
+  document.getElementById("delete-button").addEventListener('click' () => {
+
+    window.location.href += 'delete-quiz'
+  })
 };
