@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block meta %}
+<title>HappyNotes</title>
+<script src="{% static '/js/notes_page.js' %}" defer></script>
+
+<!-- CSS Stylesheet -->
+<link rel="stylesheet" href="{% static '/css/style.css' %}" />
+
+<!-- jQuery -->
+<script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"
+></script>
+{% endblock %}
+
+{% block navbar %}
+  {% with variant='dark' %}
+    {{ block.super }}
+  {% endwith %}
+{% endblock navbar %}
+
+{% block content %}
+
+<!-- Modal -->
+<div class="modal fade" id="addNotesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Create Note</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="note-form">
+
+                {% csrf_token %}
+                <div class="crispyform alert">
+                    {{form.as_p}}
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">+ add</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div id="alert-box">
+    
+</div>
+
+<div class="container-fluid mx-5 my-8">
+    <div id="spinner-box">
+        <div id="spinner-border" class="not-visible" role="status">
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#addNotesModal">
+        add note!
+    </button>
+
+    <div class="row" id="notes-box">
+        
+        <!-- Add button -->
+        <!-- <div class="col-lg-2 col-md-6">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body text-center">
+                    <p class="card-text">Send your Happy Notes to cheering up those who in Isoman ヽ(✿ﾟ▽ﾟ)ノ</p> -->
+                    <!-- Button trigger modal -->
+                    <!-- <button type="button" class="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#addNotesModal">
+                        add note!
+                    </button>
+                </div>
+            </div>
+        </div> -->
+        
+        <!-- all notes -->
+    </div>
+</div>
+{% endblock %}
+
+ <!-- d-flex align-items-stretch -->
+ <!-- action="" method="POST" -->
