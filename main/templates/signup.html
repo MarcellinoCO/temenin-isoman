@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Temenin Isoman - Sign Up</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+{% endblock meta %}
+
+{% block navbar %} 
+  {% with variant='light' %} 
+    {{ block.super }} 
+  {% endwith %} 
+{% endblock navbar %} 
+
+{% block content %}
+<div class="container w-lg-50">
+	<div class="sub-container">		
+		{% if messages %}
+			{% for message in messages %}
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<span class="alert-text">{{ message }}</span>
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>	
+				</div>
+			{% endfor %}
+		{% endif %}
+
+		<h1 class="text-center">SIGN UP</h1>
+		
+		<form class="d-flex flex-column mt-4" action="" method="POST">
+			{% csrf_token %}
+			<div class="input-group input-group-static">
+				<label>Username</label>
+				<input 
+					type="text" 
+					name="username"
+					class="form-control" 
+					placeholder="Enter your username"
+					required />
+			</div>
+
+			<div class="input-group input-group-static mt-3">
+				<label>Email Address</label>
+				<input 
+					type="email"
+					name="email"
+					class="form-control"
+					placeholder="Enter your email address" 
+					required />
+			</div>
+
+			<div class="input-group input-group-static mt-3">
+				<label>Sign-up as</label>
+				<select class="form-control form-select" name="as" aria-label="Select Role">
+					<option selected>Select your role</option>
+					<option value="User">User</option>
+					<option value="Faskes">Faskes</option>
+				</select>
+			</div>	
+
+			<div class="input-group input-group-static mt-3">
+				<label>Password</label>
+				<input 
+					type="password" 
+					name="password1" 
+					class="form-control"
+					placeholder="Enter your password"
+					required />
+			</div>
+
+			<div class="input-group input-group-static mt-3">
+				<label>Confirmation Password</label>
+				<input 
+					type="password" 
+					name="password2" 
+					class="form-control"
+					placeholder="Confirm your password"
+					required />
+			</div>	
+
+			<p class="align-self-center mt-4">
+				Already have an account? <a href="/log-in/">Log In</a>
+			</p>
+			<button type="submit" class="btn btn-primary">Sign Up</button>
+		</form>
+	</div>
+</div>
+{% endblock %}

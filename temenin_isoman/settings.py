@@ -60,6 +60,7 @@ INSTALLED_APPS = [
 
     # 3rd party apps
     'crispy_forms'
+    'deteksi_mandiri',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
