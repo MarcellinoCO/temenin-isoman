@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Create Quis</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/quizes/editmodels.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/quizes/form.css' %}">
+{% endblock meta %}
+
+{% block navbar %} 
+  {% with variant='dark' %} 
+    {{ block.super }} 
+  {% endwith %} 
+{% endblock navbar %} 
+
+{% block content %}
+<div class="container">
+	<div class="sub-container">
+		{% if messages %}
+			{% for message in messages %}			
+				<div class="alert alert-info alert-dismissible fade show" role="alert">
+					{{ message }}
+					<button type="button" class="btn btn-close" data-bs-dismiss="alert" aria-label=""Close></button>
+				</div>
+			{% endfor %}
+		{% endif %}
+		<div class="h1 title">
+			CREATE QUIZ
+		</div>
+		<br>
+		<form action="" method="POST" autocomplete="on">
+			{% csrf_token %}
+			<div class="mb-1">
+			    <label for="name" class="form-label">Name</label>
+			    <input type="text" name="name" class="form-control" id="name" aria-describedby="emailHelp" value="{{name}}">
+			</div>
+			<div class="mb-1">
+			    <label for="topic" class="form-label">Topic</label>
+			    <input type="text" name="topic" class="form-control" id="topic" value={{topic}}>
+			</div>
+			<div class="mb-1">
+			    <label for="number_of_questions" class="form-label">Number of Questions</label>
+			    <input type="text" name="number_of_questions" class="form-control" id="number_of_questions" value="{{number_of_questions}}">
+			</div>
+			<div class="mb-1">
+			    <label for="time" class="form-label">Time in minutes</label>
+			    <input type="text" name="time" class="form-control" id="time" value="{{time}}">
+			</div>
+			<div class="mb-1">
+			    <label for="required_score_to_pass" class="form-label">Required score to pass in percent</label>
+			    <input type="text" name="required_score_to_pass" class="form-control" id="required_score_to_pass" value="{{required_score_to_pass}}">
+			</div>
+			<div class="mb-1 d-grid gap-2">
+				<br>
+				<button type="submit" class="btn btn-primary">Next</button>
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %}

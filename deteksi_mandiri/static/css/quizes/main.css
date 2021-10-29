@@ -31,21 +31,15 @@
 }
 
 .alert-info {
-  background: #fe8f8f;
+  background: #BCCC9A;
   padding: 0px;
   text-align: center;
   color: black;
   font-weight: bold;
 }
 
-.edit, .crug {
-  padding: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.delete, .crug {
-  padding: 5px;
+div .edit-btn, div .delete-btn, div .see-btn, div .edit-question-btn , div .delete-question-btn {
+  padding: 1px;
   padding-left: 10px;
   padding-right: 10px;
 }

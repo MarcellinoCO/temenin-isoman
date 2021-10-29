@@ -1,0 +1,17 @@
+div .sub-container {
+ 	padding-top: 6rem;
+ 	width: 60%;
+ 	margin: 0 auto;
+}
+
+.alert-info {
+  background: #BCCC9A;
+  padding: 0px;
+  text-align: center;
+  color: black;
+  font-weight: bold;
+}
+
+.title {
+	text-align: center;
+}

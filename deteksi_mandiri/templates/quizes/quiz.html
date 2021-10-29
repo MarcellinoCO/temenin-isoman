@@ -2,9 +2,9 @@
 {% load static %} 
 
 {% block meta %}
-<title>{{obj.name}}</title>
+<title>{{ obj.name }}</title>
 <link rel="stylesheet" type="text/css" href="{% static 'css/quizes/quiz.css' %}"/>
-<script type="text/javascript" src="{% static 'js/quizes/quiz.js'%}"></script>
+<script type="text/javascript" src="{% static 'js/quizes/quiz.js' %}"></script>
 {% endblock %} 
 
 {% block navbar %} 
@@ -41,8 +41,7 @@
     <form id="quiz-form" class="mt-3 mb-3">
       {% csrf_token %}
       <div id="quiz-box"></div>
-      <input type="submit" name="">
-      <!-- <button type="submit" class="btn btn-primary mt-3">save</button> -->
+      <button type="submit" class="btn btn-primary mt-3">Submit</button>
     </form>
   </div>
 </div>
