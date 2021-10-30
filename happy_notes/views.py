@@ -5,9 +5,6 @@ from .forms import NoteForm
 from django.http import JsonResponse, HttpResponse
 
 
-# Create your views here.
-
-@login_required(login_url='/admin/login/')
 def index(request):
    # create object of note
    form = NoteForm(request.POST or None, request.FILES or None)
@@ -23,10 +20,7 @@ def index(request):
             'title': instance.title,
             'message': instance.message
          })
-
-         # if request.method == "POST" :
-         #    return redirect('/happy-notes/') 
-
+         
    context = {
       'form': form,
    }

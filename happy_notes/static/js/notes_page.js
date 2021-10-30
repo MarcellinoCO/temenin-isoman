@@ -21,18 +21,17 @@ $.ajax ({
         console.log(data)
         data.forEach(element => {
           notesBox.innerHTML += `
-            <div class="col-lg-3 col-md-6 my-4">
-                <div class="card" style="width: 18rem">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">${element.title}</h5>
-                        From: ${element.sender}
-                        <p class="card-text">
-                            <br>
-                            ${element.message}
-                        </p>
-                    </div>
+            <div class="card col-lg-3 col-md-6 px-3 py-3 mx-3 my-3 d-flex align-items-stretch border-dark" style="width: 18rem;>
+                <div class="card-body">
+                    <h5 class="card-title text-center">${element.title}</h5>
+                    From: ${element.sender}
+                    <p class="card-text">
+                        <br>
+                        ${element.message}
+                    </p>
                 </div>
             </div>
+            
           `
         });
       }, 100);
@@ -57,26 +56,25 @@ noteForm.addEventListener('submit', e=>{
     success: function(response) {
       console.log(response)
       notesBox.insertAdjacentHTML('afterBegin', `
-        <div class="col-lg-3 col-md-6 my-4">
-          <div class="card" style="width: 18rem">
-              <div class="card-body">
-                  <h5 class="card-title text-center">${response.title}</h5>
-                  From: ${response.sender}
-                  <p class="card-text">
-                      <br>
-                      ${response.message}
-                  </p>
-              </div>
-          </div>
+        <div class="card col-lg-3 col-md-6 px-3 py-3 mx-3 my-3 d-flex align-items-stretch";">
+            <div class="card-body px-3 py-3">
+                <h5 class="card-title text-center">${response.title}</h5>
+                From: ${response.sender}
+                <p class="card-text">
+                    <br>
+                    ${response.message}
+                </p>
+            </div>
         </div>
+        
       `)
-      $('#addNotesModul').modal('hide')
-      handelAlert('success', 'New note added!')
+      $('#addNotesModal').modal('hide')
+      handleAlert('success', 'New note added!')
       noteForm.reset()
     },
     error: function(error){
       console.log(error)
-      handelAlert('danger', 'Oopsie! something went wrong')
+      handleAlert('danger', 'Oopsie! something went wrong')
     }
   })
 })

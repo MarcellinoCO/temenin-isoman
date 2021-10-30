@@ -57,13 +57,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'happy_notes',
-
-    # 3rd party apps
-    'crispy_forms'
     'deteksi_mandiri',
 ]
-
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
