@@ -1,5 +1,3 @@
-console.log('hellow')
-
 const notesBox = document.getElementById('notes-box')
 const spinnerBox = document.getElementById('spinner-box')
 
@@ -21,11 +19,12 @@ $.ajax ({
         console.log(data)
         data.forEach(element => {
           notesBox.innerHTML += `
-            <div class="card col-lg-3 col-md-6 px-3 py-3 mx-3 my-3 d-flex align-items-stretch border-dark" style="width: 18rem;>
+            <div class="card bg-light border-dark col-lg-3 col-md-4 px-3 py-3 mx-3 my-3 d-flex align-items-stretch" style="width: 18rem;>
                 <div class="card-body">
                     <h5 class="card-title text-center">${element.title}</h5>
-                    From: ${element.sender}
                     <p class="card-text">
+                        From: ${element.sender}
+                        <br>
                         <br>
                         ${element.message}
                     </p>
@@ -56,7 +55,7 @@ noteForm.addEventListener('submit', e=>{
     success: function(response) {
       console.log(response)
       notesBox.insertAdjacentHTML('afterBegin', `
-        <div class="card col-lg-3 col-md-6 px-3 py-3 mx-3 my-3 d-flex align-items-stretch";">
+        <div class="card bg-light border-dark col-lg-3 col-md-6 px-3 py-3 mx-3 my-3 d-flex align-items-stretch";">
             <div class="card-body px-3 py-3">
                 <h5 class="card-title text-center">${response.title}</h5>
                 From: ${response.sender}

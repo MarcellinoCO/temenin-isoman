@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'happy_notes',
+    'obat',
     'deteksi_mandiri',
 ]
 

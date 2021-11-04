@@ -1,3 +1,7 @@
 .not-visible {
     display: none;
 }
+
+.left {
+    text-align: left;
+}
