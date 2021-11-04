@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from obat import urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
+    path('deteksi-mandiri/', include('deteksi_mandiri.urls'))
     path('happy-notes/', include('happy_notes.urls')),
+    path('obat/', include('obat.urls')),
     path('', include('django.contrib.auth.urls')),
     path('deteksi-mandiri/', include('deteksi_mandiri.urls'))
 ]
