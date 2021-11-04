@@ -56,9 +56,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
-    'happy_notes',
     'obat',
     'deteksi_mandiri',
+    'happy_notes',
 ]
 
 MIDDLEWARE = [
