@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Log In</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+{% endblock meta %}
+
+{% block navbar %} 
+  {% with variant='light' %} 
+    {{ block.super }} 
+  {% endwith %} 
+{% endblock navbar %} 
+
+{% block content %}
+<div class="container w-lg-50">
+	<div class="sub-container">
+		{% if messages %}
+			{% for message in messages %}			
+				<div class="alert alert-info alert-dismissible fade show" role="alert">
+					<span class="alert-text">{{ message }}</span>
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			{% endfor %}
+		{% endif %}
+
+		<h1 class="text-center">LOG IN</h1>
+
+		<form class="d-flex flex-column mt-4" action="" method="POST">
+			{% csrf_token %}
+
+			<div class="input-group input-group-static">
+				<label>Username</label>
+				<input 
+					type="text" 
+					name="username"
+					class="form-control" 
+					placeholder="Enter your username"
+					required />
+			</div>
+
+			<div class="input-group input-group-static mt-3">
+				<label>Password</label>
+				<input 
+					type="password" 
+					name="password" 
+					class="form-control"
+					placeholder="Enter your password"
+					required />
+			</div>
+
+			<p class="align-self-center mt-4">
+				Don't have an account? <a href="/signup/">Sign Up</a>
+			</p>
+			<button type="submit" class="btn btn-primary">Log In</button>
+		</form>
+	</div>
+</div>
+{% endblock %}

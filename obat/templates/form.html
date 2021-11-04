@@ -1,0 +1,190 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block meta %}
+<title>Temenin Isoman-Symptomps</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+{% endblock meta %} 
+
+{% block navbar %}
+  {% with variant='light' %}
+    {{ block.super }}
+  {% endwith %}
+{% endblock navbar %}
+
+{% block content %}
+<style>
+aside span a:before,
+aside span a:after{
+    content: "DONE";
+}
+.button {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.button:hover {background-color: #3e8e41; color: lightgrey}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+</style>
+<header class="mt-6">
+	<div>
+		<h1>Symptomps and Medicine</h1>
+	</div>
+</header>
+
+<main>
+<ul id="cards">
+{% if obats %} 
+        {% for obat in obats %}
+		<li class="card" >
+			<div class="card__content">
+				<div>
+					<h2>{{ obat.penyakit }}</h2>
+                    <p>{{ obat.penjelasan }}<p>
+                    <p><b>Medicine</b><p>
+                    <p>{{ obat.daftar_obat }}<p>
+                    <p><button style="background-color:#B2E4D5" type="button" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-penyakit="{{ obat.penyakit }}" data-penjelasan="{{ obat.penjelasan }}" data-daftarobat="{{ obat.daftar_obat }}" data-pk="{{ obat.pk }}">Edit</button>
+                        <button style="background-color:#F2A6A6"type="button" pk={{ obat.pk }} class="delete-obat btn btn-danger">Delete</button></p>
+				</div>
+				<figure>
+					<img src="https://static.vecteezy.com/system/resources/previews/002/752/432/non_2x/cute-doctor-with-mask-and-stay-safe-sign-vector.jpg" alt="Image description">
+				</figure>
+			</div>
+		</li>
+          {% endfor %}
+{% endif %}
+  </ul>
+</main>
+<aside>
+<a href="/obat/forms" class="button">ADD +</a>
+<span><a href="/obat"></a></span>
+</aside>
+<div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Edit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Penyakit</label>
+                        <input type="text" class="form-control penyakit" id="modal_penyakit" value="" placeholder="Penyakit">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Penjelasan</label>
+                        <input type="text" class="form-control penjelasan" id="modal_penjelasan" value="" placeholder="Penjelasan">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Daftar Obat</label>
+                        <input type="text" class="form-control daftarobat" id="modal_daftarobat" value="" placeholder="Daftar Obat">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button style="background-color:#B2E4D5" type="button" pk="" class="edit-obat btn btn-primary">Save</button>
+                </div>
+                </div>
+            </div>
+        </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+        var exampleModal = document.getElementById('exampleModal')
+            exampleModal.addEventListener('show.bs.modal', function (event) {
+                // Button that triggered the modal
+                var button = event.relatedTarget
+                // Extract info from data-* attributes
+                var penyakit = button.getAttribute('data-penyakit')
+                var penjelasan = button.getAttribute('data-penjelasan')
+                var daftarobat = button.getAttribute('data-daftarobat')
+                var pk = button.getAttribute('data-pk')
+
+                // If necessary, you could initiate an AJAX request here
+                // and then do the updating in a callback.
+                
+                // Get the modal's content.
+                var modalBodyPenyakit = exampleModal.querySelector('.modal-body .penyakit')
+                var modalBodyPenjelasan = exampleModal.querySelector('.modal-body .penjelasan')
+                var modalBodyDaftarObat = exampleModal.querySelector('.modal-body .daftarobat')
+                var modalSaveButton = exampleModal.getElementsByClassName("edit-obat")
+
+                modalBodyPenyakit.value = penyakit
+                modalBodyPenjelasan.value = penjelasan
+                modalBodyDaftarObat.value = daftarobat
+                modalSaveButton.pk = pk
+            })
+            function getCookie(cname) {
+                let name = cname + "=";
+                let decodedCookie = decodeURIComponent(document.cookie);
+                let ca = decodedCookie.split(';');
+                for(let i = 0; i <ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+
+            $(document).ready(function(){
+              $(".edit-obat").click(function() {
+                    $.ajax({
+                        url: "/obat/edit_obat",
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": getCookie("csrftoken")
+                        },
+                        data: {
+                            "id": exampleModal.getElementsByClassName("edit-obat").pk,
+                            "penyakit": document.getElementById('modal_penyakit').value,
+                            "penjelasan": document.getElementById('modal_penjelasan').value,
+                            "daftar_obat": document.getElementById('modal_daftarobat').value,
+                        },
+                        success: function(result){
+                            location.reload();
+                        },
+                        error: function (err) {
+                            console.error(err)
+                        }
+                    })
+                })
+
+                $(".delete-obat").click(function(){
+                    $.ajax({
+                        url: "/obat/delete",
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": getCookie("csrftoken")
+                        },
+                        data: {
+                            "id": $(this).attr('pk')
+                        },
+                        success: function(result){
+                            location.reload();
+                        },
+                        error: function (err) {
+                            console.error(err)
+                        }
+                    });
+                });
+            });
+        </script>
+{% endblock content %}

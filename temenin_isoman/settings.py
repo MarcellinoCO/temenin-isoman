@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
+    'obat',
+    'deteksi_mandiri',
 ]
 
 MIDDLEWARE = [
