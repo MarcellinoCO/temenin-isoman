@@ -166,7 +166,7 @@ def save_quiz_view(request, pk):
 
 
 # Function for delete quiz
-@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi_mandiri/', message='You are not authorized to see this page!')
+@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/', message='You are not authorized to see this page!')
 def delete_quiz(request, pk):
 
     # Get object and object name
@@ -177,12 +177,12 @@ def delete_quiz(request, pk):
     quiz_obj.delete()
     messages.success(request, quiz_name + ' has been deleted!')
     
-    # Redirect to deteksi_mandiri
+    # Redirect to deteksi-mandiri
     return redirect('/deteksi-mandiri/')
 
 
 # Function for edit quiz
-@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi_mandiri/', message='You are not authorized to see this page!')
+@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/', message='You are not authorized to see this page!')
 def edit_quiz(request, pk):
 
     # Get quiz object and create QuizForm instance
@@ -215,7 +215,7 @@ def edit_quiz(request, pk):
 
 
 # Function for create Quiz
-@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi_mandiri/', message='You are not authorized to see this page!')
+@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/', message='You are not authorized to see this page!')
 def create_quiz(request):
 
     # Create form Quiz
@@ -244,7 +244,7 @@ def create_quiz(request):
 
 
 # Function for edit question
-@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi_mandiri/', message='You are not authorized to see this page!')
+@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/', message='You are not authorized to see this page!')
 def edit_questions(request, pk):
 
     # Get quiz object and create inlineforsmset_factory & formset
@@ -274,7 +274,7 @@ def edit_questions(request, pk):
 
 
 # Function for see question
-@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi_mandiri/', message='You are not authorized to see this page!')
+@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/', message='You are not authorized to see this page!')
 def see_questions(request, pk):
 
     # Get quiz and questions object
@@ -286,7 +286,7 @@ def see_questions(request, pk):
 
 
 # Function for delete question
-@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi_mandiri/', message='You are not authorized to see this page!')
+@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/', message='You are not authorized to see this page!')
 def delete_questions(request, pk, pk2):
 
     # Get question object and question name
@@ -302,7 +302,7 @@ def delete_questions(request, pk, pk2):
 
 
 # Function fot edit answers
-@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi_mandiri/', message='You are not authorized to see this page!')
+@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/', message='You are not authorized to see this page!')
 def edit_answers(request, pk, pk2):
 
     # Get question object and create answerFormse and Formset 
