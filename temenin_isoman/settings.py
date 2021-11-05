@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'deteksi_mandiri',
     'bed_capacity',
     'tips_and_tricks',
+    'checklist',
 ]
 
 MIDDLEWARE = [
