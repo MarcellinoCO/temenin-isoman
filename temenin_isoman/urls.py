@@ -15,14 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from obat import urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
-    path('obat/', include('obat.urls')),
     path('', include('django.contrib.auth.urls')),
+
+    path('obat/', include('obat.urls')),
     path('deteksi-mandiri/', include('deteksi_mandiri.urls')),
     path('bed-capacity/', include('bed_capacity.urls')),
     path('tips-and-tricks/', include('tips_and_tricks.urls')),
+    path('checklist/', include('checklist.urls'))
 ]
