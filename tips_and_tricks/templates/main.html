@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Temenin Isoman</title>
+<link
+  rel="stylesheet"
+  href="{% static 'css/style.css' %}"
+/>
+
+<!-- JQuery scripts -->
+<script
+  type="text/javascript"
+  src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+></script>
+
+<script
+  type="text/javascript"
+  src="{% static '/js/search.js' %}"
+></script>
+
+<script
+  type="text/javascript"
+  src="{% static '/js/loadMore.js' %}"
+></script>
+{% endblock meta %}
+
+{% block navbar %}
+  {% with variant='light' %}
+    {{block.super}}
+  {% endwith %}
+{% endblock navbar %}
+
+{% block content %}
+{% include 'carousel.html' %}
+
+<!-- New Article Button -->
+{% if user.groups.all.0.name == 'fasilitas_kesehatan'%}
+<div class="text-center mt-4">
+  <a
+    class="btn btn-lg btn-dark"
+    id="add-button"
+    href="{% url 'add_tips' %}"
+  ><i class="fa fa-plus text-light"></i>
+    Add New Article
+  </a>
+</div>
+{% endif %}
+<!-- End New Article Button -->
+
+<div class="container post-wrapper mt-3">
+  <!-- Search Button -->
+  <div class="col d-flex justify-content-center">
+    <div class="card border shadow w-80">
+      <form class="mx-3">
+        <div class="input-group">
+          <input
+            type="text"
+            placeholder="Search"
+            class="form-control"
+            id="user-input"
+          />
+          <div class="input-group-append">
+            <button
+              type="button"
+              class="btn btn-dark m-2"
+              id="searchBtn"
+            >Search</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- End Search Button-->
+  <!-- List of Articles -->
+  <div id="replaceable-content">
+    {% include 'load_article.html' %}
+  </div>
+  <!-- End List of Articles -->
+</div>
+
+<!-- Load More Button -->
+{% if all_articles|length > 3 %}
+<div class="text-center mt-5">
+  <button
+    type="button"
+    class="btn btn-dark"
+    id="loadmoreBtn"
+  >Load More</button>
+</div>
+{% endif %}
+<!-- End Load More Button -->
+{% endblock content %}

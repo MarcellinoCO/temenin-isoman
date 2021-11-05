@@ -26,7 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # Please set SECRET_KEY environment variable in your production environment
 # (e.g. Heroku).
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-cv8-o=1#mv80g-1d0%kb5gu7t7y24th(sj-g^d@ox%ugu2%x^+')
+SECRET_KEY = os.getenv(
+    'SECRET_KEY', 'django-insecure-cv8-o=1#mv80g-1d0%kb5gu7t7y24th(sj-g^d@ox%ugu2%x^+')
 
 # Automatically determine environment by detecting if DATABASE_URL variable.
 # DATABASE_URL is provided by Heroku if a database add-on is added
@@ -56,9 +57,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
-    'happy_notes',
     'obat',
     'deteksi_mandiri',
+    'bed_capacity',
+    'tips_and_tricks',
+    'happy_notes',
 ]
 
 MIDDLEWARE = [

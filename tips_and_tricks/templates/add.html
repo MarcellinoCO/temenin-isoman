@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Temenin Isoman</title>
+{% endblock meta %}
+
+{% block navbar %}
+  {% with variant='dark' %}
+    {{block.super}}
+  {% endwith %}
+{% endblock navbar %}
+
+{% block content %}
+<div class="container mt-8">
+  <h3>Add Tips And Tricks Article</h3>
+  <p><a
+      class="btn btn-dark"
+      href="/tips-and-tricks"
+    ><i class="fa fa-arrow-left me-1"></i>
+      Back</a></p>
+  <div class="card my-3">
+    <div class="card-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-7 mx-auto d-flex justify-content-center flex-column">
+              <h3 class="text-center">Fill The Fields</h3>
+              <form
+                role="form"
+                id="contact-form"
+                method="post"
+                autocomplete="off"
+              >
+                {%csrf_token%}
+                <div class="card-body">
+                  <div class="mb-4">
+                    <div class="input-group input-group-dynamic">
+                      <label class="form-label">Title</label>
+                      {{ form.title }}
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                    <div class="input-group input-group-dynamic">
+                      <label class="form-label">Article Source/Author</label>
+                      {{ form.source }}
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                    <div class="input-group input-group-static mb-4">
+                      <label>Article Published Date</label>
+                      {{ form.published_date }}
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                    <div class="input-group input-group-dynamic">
+                      <label class="form-label">Image URL</label>
+                      {{ form.image_url  }}
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                    <div class="input-group input-group-dynamic">
+                      <label class="form-label">Article URL</label>
+                      {{ form.article_url  }}
+                    </div>
+                  </div>
+                  <div class="input-group mb-4 input-group-static">
+                    <label>Article Brief Description</label>
+                    {{ form.brief_description }}
+                  </div>
+                  <div class="col-md-12">
+                    <button
+                      type="submit"
+                      class="btn bg-gradient-dark w-100"
+                    >Submit</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

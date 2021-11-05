@@ -20,8 +20,10 @@ from obat import urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
-    path('happy-notes/', include('happy_notes.urls')),
     path('obat/', include('obat.urls')),
     path('', include('django.contrib.auth.urls')),
-    path('deteksi-mandiri/', include('deteksi_mandiri.urls'))
+    path('deteksi-mandiri/', include('deteksi_mandiri.urls')),
+    path('bed-capacity/', include('bed_capacity.urls')),
+    path('tips-and-tricks/', include('tips_and_tricks.urls')),
+    path('happy-notes/', include('happy_notes.urls')),
 ]

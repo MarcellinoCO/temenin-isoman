@@ -1,0 +1,42 @@
+{% if articles %}
+  {% for a in articles %}
+  <div
+    class="card p-3 mt-4 post-box"
+    id="article-list"
+  >
+    <div class="row">
+      <div class="col-md-4">
+        <div class="position-relative">
+          <img
+            height="230"
+            src={{ a.image_url }}
+            class="rounded w-100"
+          >
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="mt-2">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-1">{{ a.title }}</h5>
+          </div>
+          <div class="d-flex justify-content-md-start justify-content-between views-content mt-2">
+            <div class="d-flex flex-row align-items-center"> <i class="fa fa-calendar"></i> <span class="ms-1 views">{{ a.published_date }}</span> </div>
+            <div class="d-flex flex-row align-items-center ms-2"> <i class="fa fa-user"></i> <span class="ms-1 views">{{ a.source }}</span> </div>
+          </div>
+          <p class="text-dark mt-3">{{ a.brief_description }}</p>
+          <a
+            class="btn btn-sm btn-dark"
+            target="_blank"
+            href="{{ a.article_url }}"
+            class="align-self-end btn btn-sm btn-block btn-dark"
+          >Lanjut Membaca</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+{% else %}
+<div class="text-center mt-6">
+  <p class="lead">No Article Available</p>
+</div>
+{% endif %}
