@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load mathfilters %}
+
+{% block meta %}
+<title>Temenin Isoman - Checklist</title>
+<script type="text/javascript" src="{% static 'js/list.js'%}"></script>
+{% endblock meta %}
+
+{% block navbar %}
+  {% with variant='light' %}
+    {{ block.super }}
+  {% endwith %}
+{% endblock navbar %}
+
+{% block content %}
+<div 
+  class="page-header min-vh-80" 
+  style="background-image: url('https://images.unsplash.com/photo-1586883625527-6772e4d16c65?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=manuel-peris-tirado-fFhhUff5PJ8-unsplash.jpg&w=1920');"
+>
+  <span class="mask opacity-6 bg-gradient-dark"></span>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 mx-auto">
+        <div class="text-center">
+          <h1>✅</h1>
+          <h1 class="text-white">
+            Welcome back,{{" "}}
+            <span class="text-warning">{{ user.username }}</span>
+          </h1>
+
+          {% if quarantine_length|sub:current_day == 0 %}
+            <h4 class="fw-normal text-white">
+              This is your{{" "}}
+              <span class="text-primary">Last Day</span>
+              {{" "}}of Quarantine!
+            </h4>
+          {% else %}
+            <h4 class="fw-normal text-white">
+              This is your{{" "}}
+              <span class="text-primary">Day {{ current_day }}</span>
+              {{" "}}of Quarantine!<br/>
+              {{ quarantine_length|sub:current_day }} days to go
+            </h4>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card card-body mx-3 mx-md-4 mt-n5 shadow-xl ">
+  <div class="container">
+    <div class="section d-flex flex-column align-items-center text-center p-4 p-4">
+      <div class="row row-cols-5 justify-content-center w-50" id="days"></div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
