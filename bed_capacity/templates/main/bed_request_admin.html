@@ -1,0 +1,149 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block meta %}
+<title>Admin Rumah Sakit</title>
+
+<!--Modal scripts-->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!--local css and js scripts-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{% static 'js/bed_request_admin.js' %}"></script>
+<link rel="stylesheet" href='{% static "css/bed_capacity.css" %}'>
+{% endblock meta %} 
+
+{% block content %}
+<!--Main header-->
+<div class="main-header page-header min-vh-50">
+    <div class="row">
+        <div class="col-md-12" style="margin-left: 20%;">
+            <h1 class="text-white">Administrasi Bed</h1>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Untuk Acc/Dec-->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Konfirmasi</h5>
+        </div>
+        <div class="modal-body">
+            <p>Apakah anda yakin untuk <span id='nama-aksi'></span> <span id='nama-pasien'></span>
+                di <span id='nama-rs'></span>?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id='batal-btn'>Batal</button>
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="kode-request" id="kode-request" value=''>
+                <input type="hidden" name="kode-aksi" id="kode-aksi" value=''>
+                <input type="submit" name="acc-del-requester" class="btn btn-success" value='Konfirmasi'>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal Untuk Edit-->
+<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Edit Rumah Sakit</h5>
+        </div>
+        <form action="" method="post">
+            <div class="modal-body">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id-isi">Jumlah Bed</label>
+                    <input type="number" class="border border-dark form-control" name="isi" id="id-isi">
+                </div>
+                <div class="form-group">
+                    <label for="id-kapasitas">Kapasitas</label>
+                    <input type="number" class="border border-dark form-control" name="kapasitas" id="id-kapasitas">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="kode-rs" id="kode-rs" value="">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id='batal-btn2'>Batal</button>
+                <input type="submit" name="edit-rumah-sakit" class="btn btn-success" value='Konfirmasi'>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<!--Contents-->
+<div class="container mt-n5">
+    <div class="row">
+        <!--Card bagian untuk menunjukkan rumah sakit-->
+        <div class="card">
+            <div class="card-body" id="content-table">
+                <!--Search and edit-->
+                <div class="card-body">
+                    <div class="container">
+                        <!--Bagian untuk selector wilayah-->
+                        <div class="row">
+                            <div class="col-md-1">
+                                <p>Wilayah:</p>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="border border-dark form-select form-select-sm" id="select-wil" aria-label="Default select example" style="padding-left: 1rem; padding-right: 1rem;">
+                                    <option selected>---</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!--Bagian untuk selector RS-->
+                        <div class="row">
+                            <div class="col-md-1">
+                                <p>RS:</p>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="border border-dark form-select form-select-sm" id="select-rs" aria-label="Default select example" style="padding-left: 1rem; padding-right: 1rem;">
+                                    <option selected>---</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-dark btn-sm" id="search-btn">Search</button>
+                                <button type="button" class="btn btn-light btn-sm" id="edit-btn">Edit</button>
+                            </div>
+                            <div class="col-md-2">
+                                <p style="padding-top: 5px;">isi/kapasitas = <span id="indikator-kapasitas">0/0</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Table Head-->
+                <div class="row" style="margin-bottom: 20px;">
+                    <div class="col-md-10">
+                        <h4>Request</h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4>Action</h4>
+                    </div>
+                </div>
+                <hr>
+
+                <!--Table Content-->
+                <div id='table-content'></div>
+            </div>
+            <!--prev/next button-->
+            <div class="card-body">
+                <div>
+                    <div style="float: right;" class="btn-group btn-group-sm" role="group"aria-label="Basic example">
+                        <button type="button" class="nav-btn btn btn-secondary">Prev</button>
+                        <button type="button" class="nav-btn btn btn-secondary">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

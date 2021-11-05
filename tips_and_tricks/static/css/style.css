@@ -1,0 +1,26 @@
+.views-content {
+  color: #606271;
+}
+
+.views {
+  font-size: 12px;
+}
+
+.carousel-caption .card {
+  background: rgba(255, 255, 255, 0.123);
+  overflow: hidden;
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+#article-list:hover {
+  overflow: hidden;
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transform: scale(1.005);
+  box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}
+
+#add-button{
+  border-radius: 40px;
+}
