@@ -1,6 +1,6 @@
-import json
-from django.shortcuts import render
+from django.forms.models import model_to_dict
 from django.http import JsonResponse
+from django.shortcuts import render
 from django.utils import timezone
 
 from .models import Task, Day, Quarantine, QuarantineDay, QuarantineTask
@@ -16,7 +16,7 @@ def checklist_home(request):
             quarantine_length = len(Day.objects.all())
             current_day = timezone.now() - quarantine.start_timestamp
 
-            quarantine_days = quarantine.quarantine_day_set.all()
+            quarantine_days = quarantine.quarantineday_set.all()
 
             return render(request, "checklist_list.html", {
                 "quarantine": quarantine,
@@ -29,18 +29,26 @@ def checklist_home(request):
 
 
 def get_quarantine_days(request):
-    if request.method == "POST" and request.body:
-        body = json.loads(request.body)
+    if request.method == "POST":
+        if not request.POST.lists():
+            return JsonResponse({
+                "result": "error",
+                "message": "Request body not found!"
+            })
+
+        body = dict(request.POST.lists())
         username = body["username"]
 
         if not username:
             return JsonResponse({
                 "result": "error",
-                "message": "Parameter 'user' not found in requst body!"
+                "message": "Parameter 'user' not found in request body!"
             })
+        username = username[0]
 
         quarantine = get_current_quarantine(username)
-        quarantine_days = quarantine.quarantine_day_set.all()
+        quarantine_days = [
+            data for data in quarantine.quarantineday_set.values()]
 
         return JsonResponse({
             "result": "success",
