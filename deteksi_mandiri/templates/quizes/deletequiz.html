@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Delete Quiz</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+{% endblock meta %}
+
+{% block navbar %} 
+  {% with variant='dark' %} 
+    {{ block.super }} 
+  {% endwith %} 
+{% endblock navbar %} 
+
+{% block content %}
+<div class="container">
+	<div class="sub-container">
+		{% if messages %}
+			{% for message in messages %}			
+				<div class="alert alert-info alert-dismissible fade show" role="alert">
+					{{ message }}
+					<button type="button" class="btn btn-close" data-bs-dismiss="alert" aria-label=""Close></button>
+				</div>
+			{% endfor %}
+		{% endif %}
+		<div class="h1 title">
+			DELETE QUIZ
+		</div>
+		<form action="" method="POST">
+			{% csrf_token %}
+			<div class="mb-1">
+					<label for="select" class="form-label">Choose you Quiz</label>
+					<select class="form-select form-control" name ="quiz" id="select" aria-label="Default select example">
+						<option selected>Select Quiz</option>
+						{% for quiz in quizs %}
+							<option value={{ quiz }}>{{ quiz }}</option>
+						{% endfor %}
+					</select>
+			</div>
+			<div class="mb-1">
+				<button type="submit" class="btn btn-primary">Kirim</button>
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %}

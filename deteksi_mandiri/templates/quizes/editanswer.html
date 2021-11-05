@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Edit Answer</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/quizes/editmodels.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/quizes/form.css' %}">
+<script type="text/javascript" src="{% static 'js/quizes/editanswer.js'%}"></script>
+{% endblock meta %}
+
+{% block navbar %} 
+  {% with variant='dark' %} 
+    {{ block.super }} 
+  {% endwith %} 
+{% endblock navbar %} 
+
+{% block content %}
+<div class="container">
+	<div class="sub-container">
+		{% if messages %}
+			{% for message in messages %}			
+				<div class="alert alert-info alert-dismissible fade show" role="alert">
+					{{ message }}
+					<button type="button" class="btn btn-close" data-bs-dismiss="alert" aria-label=""Close></button>
+				</div>
+			{% endfor %}
+		{% endif %}
+		<div class="h2 title">
+			{{question.text}}
+      <br>
+		</div>
+		<form action="" method="POST">
+			<div class="h6 title">(Fill Your Answers Here!)</div>
+			<br>
+			<br>
+			{% csrf_token %}
+      {{ formset.management_form }}
+      {% for form in formset %}
+        <label class="title-p"></label>
+        {{ form.as_p }}
+        <br>
+        <br>
+      {% endfor %}
+			<div class="mb-1 d-grid gap-2">
+				<br>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %}

@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
             name='Result',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('skor', models.FloatField()),
+                ('result_score', models.FloatField()),
                 ('quiz', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='deteksi_mandiri.quiz')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
@@ -50,6 +50,7 @@ class Migration(migrations.Migration):
                 ('text', models.CharField(max_length=100)),
                 ('correct', models.BooleanField(default=False)),
                 ('created', models.DateTimeField(auto_now_add=True)),
+                ('poin', models.IntegerField()),
                 ('question', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='answers', to='deteksi_mandiri.question')),
             ],
         ),

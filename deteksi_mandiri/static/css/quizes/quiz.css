@@ -1,10 +1,3 @@
-.background {
-  top: 0;
-  height: 80px;
-  width: 100%;
-  background-color: #333;
-}
-
 .content {
   padding-top: 1em;
   padding-left: 8em;
@@ -13,31 +6,52 @@
 }
 
 .title {
-  text-align: left;
-  font-size: 35px;
+  font-size: 2.5em;
   font-weight: bolder;
   color: #e91e63;
 }
 
-.info {
-  font-size: 15px;
-  font-weight: bolder;
+.disp_none {
+  display: none;
+}
+
+.rows {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.c1 {
+  width: 85%;
+}
+
+.c2 {
+  width: 15%;
+  text-align: right;
+}
+
+#sumarry-title {
+  text-align: center;
 }
 
 #timer {
-  margin-top: 0.6rem;
-  margin-bottom: auto;
-  font-size: 1.5rem;
+  font-size: 2em;
+  margin-top: 0.2em;
 }
 
-#result-box {
-  margin-top: 1.7em;
+.btn-danger {
+  padding: 1.2em;
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  margin-top: 1.2em;
 }
 
-.questions {
-  font-size: 1.2rem;
+.info {
+  font-size: 1em;
+  font-weight: bolder;
+  color: rgba(0, 0, 0, 0.5);
 }
 
-.answer {
-  font-size: 1.1rem;
+#result {
+  display: none;
 }
