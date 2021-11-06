@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils import dateformat
+from django.utils import dateformat, timezone
 
 
 class Task(models.Model):
@@ -24,9 +24,17 @@ class Day(models.Model):
 class Quarantine(models.Model):
     username = models.CharField("Username", max_length=150)
     start_timestamp = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name="Start timestamp"
+        blank=True,
+        verbose_name="Start timestamp",
+        help_text="Leave empty on creation"
     )
+
+    def save(self, *args, **kwargs):
+        # Add timestamp when initial creation.
+        if self._state.adding:
+            self.start_timestamp = timezone.now().replace(hour=0, minute=0, second=0)
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Quarantine for {self.username} on {self.pretty_start_timestamp()}"

@@ -1,4 +1,3 @@
-from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
@@ -65,6 +64,7 @@ def get_quarantine_data(request):
 
         return JsonResponse({
             "result": "success",
+            "quarantineStart": quarantine.start_timestamp,
             "quarantineData": quarantine_data
         })
     else:
