@@ -40,7 +40,7 @@ class Quarantine(models.Model):
         return f"Quarantine for {self.username} on {self.pretty_start_timestamp()}"
 
     def pretty_start_timestamp(self):
-        return dateformat.format(self.start_timestamp, 'Y-m-d H:i:s')
+        return dateformat.format(self.start_timestamp, 'Y-m-d')
 
 
 class QuarantineDay(models.Model):

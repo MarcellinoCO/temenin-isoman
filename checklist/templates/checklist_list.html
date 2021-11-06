@@ -31,20 +31,7 @@
             <span id="username" class="text-warning">{{ user.username }}</span>
           </h1>
 
-          {% if quarantine_length|sub:current_day == 0 %}
-            <h4 class="fw-normal text-white">
-              This is your{{" "}}
-              <span class="text-primary">Last Day</span>
-              {{" "}}of Quarantine!
-            </h4>
-          {% else %}
-            <h4 class="fw-normal text-white">
-              This is your{{" "}}
-              <span class="text-primary">Day {{ current_day }}</span>
-              {{" "}}of Quarantine!<br/>
-              {{ quarantine_length|sub:current_day }} days to go
-            </h4>
-          {% endif %}
+          <h4 id="title" class="fw-normal text-white"></h4>
         </div>
       </div>
     </div>
@@ -54,7 +41,8 @@
 <div class="card card-body mx-3 mx-md-4 mt-n5 shadow-xl ">
   <div class="container">
     <div class="section d-flex flex-column align-items-center text-center p-4 p-4">
-      <div id="days" class="row row-cols-5 justify-content-center w-50"></div>
+      <div id="loader" class="spinner-border text-primary"></div>
+      <div id="days" class="row row-cols-5 justify-content-center w-md-50"></div>
     </div>
   </div>
 </div>
