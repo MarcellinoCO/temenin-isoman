@@ -28,31 +28,44 @@ def checklist_home(request):
     return render(request, "checklist_home.html", {})
 
 
-def get_quarantine_days(request):
+def get_quarantine_data(request):
     if request.method == "POST":
-        if not request.POST.lists():
+        body = request.POST
+        if not body:
             return JsonResponse({
                 "result": "error",
                 "message": "Request body not found!"
             })
 
-        body = dict(request.POST.lists())
         username = body["username"]
-
         if not username:
             return JsonResponse({
                 "result": "error",
-                "message": "Parameter 'user' not found in request body!"
+                "message": "Parameter 'username' not found in request body!"
             })
-        username = username[0]
 
+        # Get quarantine reference from username.
         quarantine = get_current_quarantine(username)
-        quarantine_days = [
-            data for data in quarantine.quarantineday_set.values()]
+
+        # Construct quarantine data for page data.
+        quarantine_data = []
+        for day in quarantine.quarantineday_set.all():
+            current_day = {"id": day.id, "day": day.day_id, "tasks": []}
+
+            for task in day.quarantinetask_set.all():
+                task_data = Task.objects.get(pk=task.task_id)
+                current_day["tasks"].append({
+                    "id": task.task_id,
+                    "title": task_data.name,
+                    "description": task_data.description,
+                    "done": task.is_done
+                })
+
+            quarantine_data.append(current_day)
 
         return JsonResponse({
             "result": "success",
-            "quarantineDays": quarantine_days
+            "quarantineData": quarantine_data
         })
     else:
         return JsonResponse({

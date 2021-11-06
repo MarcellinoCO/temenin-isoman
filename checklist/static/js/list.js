@@ -1,17 +1,5 @@
-const getCookie = (name) => {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== "") {
-    const cookies = document.cookie.split(";");
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === name + "=") {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-};
+const getCookie = (name) =>
+  document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() || "";
 
 const loadQuarantineDays = () => {
   const username = $("#username").text();
@@ -19,10 +7,10 @@ const loadQuarantineDays = () => {
 
   $.ajax({
     type: "POST",
-    url: "quarantine-days",
+    url: "quarantine-data",
     headers: { "X-CSRFToken": getCookie("csrftoken") },
 
-    data: { "username": username },
+    data: { username: username },
 
     success: (response) => {
       console.log(response);
@@ -30,5 +18,5 @@ const loadQuarantineDays = () => {
   });
 };
 
-loadQuarantineDays()
-setInterval(loadQuarantineDays, 5000);
+loadQuarantineDays();
+setInterval(loadQuarantineDays, 10000);

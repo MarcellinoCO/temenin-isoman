@@ -4,5 +4,5 @@ from .views import *
 
 urlpatterns = [
     path('', checklist_home),
-    path('quarantine-days', get_quarantine_days)
+    path('quarantine-data', get_quarantine_data)
 ]
