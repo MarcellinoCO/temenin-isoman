@@ -1,90 +1,112 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} 
+{% load static %} 
 
-{% block meta %}
+{% block meta%}
 <title>Deteksi Mandiri</title>
-<link 
-	rel="stylesheet" 
-	type="text/css" 
-	href="{% static 'css/quizes/main.css' %}" />
-<script type="text/javascript" src="{% static 'js/quizes/main.js'%}"></script>
-{% endblock %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/quizes/main.css' %}">
+<script type="text/javascript" src="{% static 'js/quizes/main.js' %}"></script>
+{% endblock %} 
 
-{% block navbar %}
-  {% with variant='dark' %}
-    {{ block.super }}
-  {% endwith %}
-{% endblock navbar %}
+{% block navbar %} 
+  {% with variant='dark' %} 
+    {{ block.super }} 
+  {% endwith %} 
+{% endblock navbar %} 
 
 {% block content %}
-<div class="text-center">
-	<div class="content">
-		<!-- Modal -->
-		<div 
-			class="modal fade" 
-			id="quizStartModel" 
-			tabindex="-1" 
-			aria-labelledby="exampleModalLabel" 
-			aria-hidden="true"
-		>
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title" id="exampleModalLabel">Deteksi Mandiri</h5>
-						
-						<button 
-							type="button" 
-							class="btn-close" 
-							data-bs-dismiss="modal" 
-							aria-label="Close"
-						></button>
-					</div>
-
-					<div 
-						class="modal-body text-start"
-						id="modal-body-confirm"
-					></div>
-								
-					<div class="modal-footer">
-						<button 
-							type="button"
-							class="btn btn-danger"
-							data-bs-dismiss="modal"
-						>No</button>
-
-						<button 
-							type="button"
-							id="start-button"
-							class="btn btn-success"
-						>Yes</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="h1">Quiz List</div>
-		<hr>
-
-		<!-- Quizes list -->
-		<div class="d-flex flex-column">
-			{% for obj in object_list %}
-			<div class="wrapper">
-				<button 
-					class="btn btn-link modal-button btn-primary quiz-list-btn" 
-					data-pk="{{ obj.pk }}" 
-					data-quiz="{{ obj.name }}" 
-					data-question="{{ obj.number_of_questions }}" 
-					data-time="{{ obj.time }}" 
-					data-pass="{{ obj.required_score_to_pass }}"
-					data-bs-toggle="modal" 
-					data-bs-target="#quizStartModel"
-					style="font-size: 0.7rem; padding: auto;"
-				>
-					{{ obj.name }}
-				</button>
-			</div>
-			{% endfor %}
-		</div>
-	</div>
+<div class="main-content">
+    <div class="content">
+        <!-- Modal -->
+        <div class="modal fade" id="quizStartModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="exampleModalLabel">Deteksi Mandiri</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modal-body-confirm"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                        <button type="button" id="start-button" class="btn btn-success">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <!-- Message -->
+            {% if messages %}
+                {% for message in messages %}           
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn btn-close" data-bs-dismiss="alert" aria-label=""Close></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <!-- Assessment content -->
+        <div class="h1">Assessment List</div>
+        <hr>
+        <div class="sub-content">
+            {% for quiz in quizs %}
+                <div class="wrapper">
+                    <button 
+                        class="btn btn-link modal-button btn-primary quiz-list-btn" 
+                        data-pk="{{quiz.pk}}" 
+                        data-quiz="{{quiz.name}}" 
+                        data-question="{{quiz.number_of_questions}}" 
+                        data-time="{{quiz.time}}" 
+                        data-action="view"
+                        data-pass="{{quiz.required_score_to_pass}}"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#quizStartModel">
+                        {{quiz.name}}
+                    </button>
+                </div>
+                {% if user.is_staff %}
+                    <div class="wrapper">
+                        <button 
+                            class="edit-btn btn-link btn-sm btn btn-outline-info" 
+                            data-pk="{{quiz.pk}}" 
+                            data-quiz="{{quiz.name}}"
+                            data-question="{{quiz.number_of_questions}}" 
+                            data-time="{{quiz.time}}" 
+                            data-pass="{{quiz.required_score_to_pass}}">
+                            Edit
+                        </button>
+                        <button 
+                            class="see-btn btn-link btn-sm btn btn-outline-success" 
+                            data-pk="{{quiz.pk}}" 
+                            data-quiz="{{quiz.name}}"
+                            data-question="{{quiz.number_of_questions}}" 
+                            data-time="{{quiz.time}}" 
+                            data-pass="{{quiz.required_score_to_pass}}">
+                            Show Questions
+                        </button>
+                        <button
+                            class="delete-btn btn-link btn-sm btn btn-outline-danger" 
+                            data-pk="{{quiz.pk}}" 
+                            data-quiz="{{quiz.name}}"
+                            data-question="{{quiz.number_of_questions}}" 
+                            data-time="{{quiz.time}}" 
+                            data-pass="{{quiz.required_score_to_pass}}"
+                            data-action="delete"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#quizStartModel">
+                            Delete
+                        </button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div>
+            <div>
+                <hr>
+                {% if user.is_staff %}
+                    <button id="create-quiz" class="btn btn-success" type="button">Create Quiz</button>
+                {% endif %}
+                <button id="goback1" class="btn btn-danger">Go Back</button>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

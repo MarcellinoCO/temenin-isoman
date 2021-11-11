@@ -1,0 +1,47 @@
+select {
+  padding: 10px;
+  border-radius: 10px;
+  width: 100% !important;
+}
+
+.container {
+  margin: auto !important;
+}
+
+#iconWA {
+  background: linear-gradient(195deg, #EC407A 0%, #D81B60 100%);
+  border-radius: 50%;
+  height: 200px;
+  width: 200px;
+  text-align: center;
+  margin: auto;
+}
+
+#iconWA i {
+  line-height: 200px;
+  transform: scale(-1, 1);
+  color: #fff;
+  font-size: 100px;
+}
+
+#hotline p:first-child {
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+#hotline h3 {
+  color: #D81B60;
+  font-size: 68px;
+}
+
+tr>td:nth-child(3) i {
+  margin-left: 20px;
+}
+
+
+tr:hover>td:nth-child(1),
+tr:hover>td:nth-child(2) {
+  background-color: #D81B60;
+  color: #fff;
+}

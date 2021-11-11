@@ -19,7 +19,7 @@ def index(request):
 
     if request.is_ajax():
         html = render_to_string(
-            template_name="load_article.html", context={"articles": articles}
+            template_name="tips_and_tricks/load_article.html", context={"articles": articles}
         )
         data_dict = {"html_from_view": html}
         return JsonResponse(data=data_dict, safe=False)
@@ -28,7 +28,7 @@ def index(request):
     page_number = request.GET.get('page')
     posts_obj = paginator.get_page(page_number)
     response = {'articles': posts_obj, 'all_articles': articles}
-    return render(request, 'main.html', response)
+    return render(request, 'tips_and_tricks/main.html', response)
 
 
 def add(request):
@@ -37,7 +37,7 @@ def add(request):
         form.save()
         return HttpResponseRedirect("/tips-and-tricks")
     response = {'form': form}
-    return render(request, 'add.html', response)
+    return render(request, 'tips_and_tricks/add.html', response)
 
 
 def load_more(request):

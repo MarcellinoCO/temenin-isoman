@@ -26,4 +26,6 @@ urlpatterns = [
     path('bed-capacity/', include('bed_capacity.urls')),
     path('tips-and-tricks/', include('tips_and_tricks.urls')),
     path('checklist/', include('checklist.urls'))
+    path('happy-notes/', include('happy_notes.urls')),
+    path('emergency-contact/', include('emergency_contact.urls'))
 ]

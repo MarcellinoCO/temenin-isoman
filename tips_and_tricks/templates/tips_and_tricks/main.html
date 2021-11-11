@@ -32,7 +32,7 @@
 {% endblock navbar %}
 
 {% block content %}
-{% include 'carousel.html' %}
+{% include 'tips_and_tricks/carousel.html' %}
 
 <!-- New Article Button -->
 {% if user.groups.all.0.name == 'fasilitas_kesehatan'%}
@@ -74,7 +74,7 @@
   <!-- End Search Button-->
   <!-- List of Articles -->
   <div id="replaceable-content">
-    {% include 'load_article.html' %}
+    {% include 'tips_and_tricks/load_article.html' %}
   </div>
   <!-- End List of Articles -->
 </div>

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+  <title>Temenin Isoman</title>
+
+  <!--Modal scripts-->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <!--local css and js scripts-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+{% endblock meta %}
+
+{% block navbar %}
+  {% with variant='dark' %}
+    {{block.super}}
+  {% endwith %}
+{% endblock navbar %}
+
+{% block content %}
+
+<h1 class="text-dark mt-7 text-center">Emergency Contacts</h1>
+<div class="row container" style="margin: auto;">
+  <div class="mt-5 col-12 col-lg-6 justify-content-center" style="margin: auto;">
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} text-white" id="message" role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <h3 class="h4 text-start mt-4">Input RS Baru</h3>
+    <form action="" method="POST">
+      {% csrf_token %}
+      <fieldset>
+        <div class="input-group input-group-outline my-3">
+          <label for="nama" class="form-label">Nama</label>
+          <input name="nama" type="text" class="form-control" required>
+        </div>
+        <div class="input-group input-group-outline my-3">
+          <label for="alamat" class="form-label">Alamat</label>
+          <input name="alamat" type="text" class="form-control" required>
+        </div>
+        <div class="input-group input-group-outline my-3">
+          <label for="telepon" class="form-label">Telepon</label>
+          <input name="telepon" type="number" class="form-control" required>
+        </div>
+        <div class="input-group input-group-static mb-4">
+          <label for="daerah" class="ms-0">Kota</label>
+          <select class="form-control" name="daerah" id="daerah" required>
+            <option hidden>Pilih Kota</option>
+            {% for daerah in list_daerah %}
+            <option value="{{daerah.id}}">{{daerah.daerah}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <h6>Jika kota yang ingin dipilih belum berada di dalam daftar, silahkan klik <u><a
+              href="/emergency-contact/add-daerah">di sini</a></u>.</h6>
+        <div class="row" style="justify-content: space-around;">
+          <div class="col">
+            <a class="btn btn-primary" href="/emergency-contact">Kembali</a>
+          </div>
+          <div class="col" style="position: relative">
+            <input type="submit" style="position: absolute;right: 10px;" class="btn bg-gradient-primary" value="Submit"
+              required>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<script>
+  setTimeout(() => {
+    if ($('#message').length > 0) {
+      $('#message').remove();
+    }
+  }, 2000);
+</script>
+
+{% endblock content %}

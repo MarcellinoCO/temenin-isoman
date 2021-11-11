@@ -19,7 +19,7 @@ def bed_capacity(request):
         instance = form.save(commit=False)
         instance.rs = RumahSakit.objects.get(id=id)
         instance.save()
-        return HttpResponseRedirect('/bed_capacity')
+        return HttpResponseRedirect('/bed-capacity')
 
     response["form"] = form
     response["rumahsakit"] = RumahSakit.objects.all().values()
@@ -51,7 +51,7 @@ def bed_request_admin(request):
             rs.isi = request.POST['isi']
             rs.save()
 
-        return HttpResponseRedirect('/bed_capacity/adm')
+        return HttpResponseRedirect('/bed-capacity/adm')
 
     response['requests'] = BedRequest.objects.all().values()
     return render(request, 'main/bed_request_admin.html', response)
