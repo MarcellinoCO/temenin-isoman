@@ -6,7 +6,6 @@ from .models import Task, Day, Quarantine, QuarantineDay, QuarantineTask
 
 
 def checklist_home(request):
-    # If there is already a running quarantine for current user.
     if request.user.is_authenticated:
         quarantine = get_current_quarantine(request.user.username)
 
@@ -25,6 +24,40 @@ def checklist_home(request):
             })
 
     return render(request, "checklist_home.html", {})
+
+
+def start_quarantine(request):
+    if request.method == "POST":
+        body = request.POST
+        if not body:
+            return JsonResponse({
+                "result": "error",
+                "message": "Request body not found!"
+            })
+
+        username = body["username"]
+        if not username:
+            return JsonResponse({
+                "result": "error",
+                "message": "Parameter 'username' not found in request body!"
+            })
+
+        # Get quarantine reference from username.
+        quarantine = get_current_quarantine(username)
+        if quarantine:
+            return JsonResponse({
+                "result": "error",
+                "message": f"A running quarantine for {username} exists!"
+            })
+
+        quarantine = Quarantine.objects.create(username=username)
+
+        return JsonResponse({"result": "success"})
+    else:
+        return JsonResponse({
+            "result": "error",
+            "message": "Only accepting POST request!"
+        })
 
 
 def get_quarantine_data(request):
