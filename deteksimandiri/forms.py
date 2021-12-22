@@ -1,4 +1,3 @@
-from django import forms
 from django.forms import ModelForm
 from .models import *
 
@@ -7,7 +6,5 @@ from .models import *
 class QuizForm(ModelForm):
     
     class Meta :
-        model = Quiz
+        model = AssessmentModel
         fields = "__all__"
-
-

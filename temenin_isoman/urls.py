@@ -23,7 +23,7 @@ urlpatterns = [
 
     path('bed-capacity/', include('bed_capacity.urls')),
     path('checklist/', include('checklist.urls')),
-    path('deteksi-mandiri/', include('deteksi_mandiri.urls')),
+    path('deteksimandiri/', include('deteksimandiri.urls')),
     path('emergency-contact/', include('emergency_contact.urls')),
     path('happy-notes/', include('happy_notes.urls')),
     path('obat/', include('obat.urls')),

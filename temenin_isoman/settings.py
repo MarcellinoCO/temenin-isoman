@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     'mathfilters',
     'bed_capacity',
     'checklist',
-    'deteksi_mandiri',
+    'deteksimandiri',
     'emergency_contact',
     'happy_notes',
     'main',
