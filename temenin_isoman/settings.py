@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'happy_notes',
     'emergency_contact',
     'checklist'
+    'user',
 ]
 
 MIDDLEWARE = [
