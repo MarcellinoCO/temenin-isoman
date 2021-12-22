@@ -92,3 +92,19 @@ def get_dummy(request):
         return JsonResponse({"data": "unauthorized"})
 
     return JsonResponse({"data": "wowowowowoww"})
+
+
+@csrf_exempt
+def get_user(request):
+    if request.method != "POST":
+        return JsonResponse({"result": "Must use POST method!"})
+
+    user = request.user
+
+    if not user.is_authenticated:
+        return JsonResponse({"result": "Not yet authenticated!"}, status=403)
+
+    user = User.objects.get(username=user)
+    roles = list(user.groups.values_list('name', flat=True))
+
+    return JsonResponse({"data": {"username": user.username, "email": user.email, "roles": roles}}, status=200)
