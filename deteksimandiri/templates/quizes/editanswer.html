@@ -34,13 +34,13 @@
 			<br>
 			<br>
 			{% csrf_token %}
-      {{ formset.management_form }}
-      {% for form in formset %}
-        <label class="title-p"></label>
-        {{ form.as_p }}
-        <br>
-        <br>
-      {% endfor %}
+			{{ formset.management_form }}
+			{% for form in formset %}
+				<label class="title-p"></label>
+				{{ form.as_p }}
+				<br>
+				<br>
+			{% endfor %}
 			<div class="mb-1 d-grid gap-2">
 				<br>
 				<button type="submit" class="btn btn-primary">Submit</button>

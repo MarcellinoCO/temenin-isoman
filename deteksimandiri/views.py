@@ -12,38 +12,38 @@ from .models import *
 
 # Function for render main,html and display quiz object
 def deteksi_mandiri_view(request):
-    quiz = Quiz.objects.all()
+    assessment = AssessmentModel.objects.all()
 
     # Return render
-    return render(request, 'quizes/main.html', {'quizs' : quiz})
+    return render(request, 'quizes/main.html', {'quizs' : assessment})
 
 
 # Display current quiz
-@allowed_users(allowed_roles=['common_user', 'fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/', message='You need login to start this assessment!')
+@allowed_users(allowed_roles=['common_user', 'fasilitas_kesehatan', 'admin'], path='/deteksimandiri/', message='You need login to start this assessment!')
 def quiz_view(request, pk):
     if pk == 'create-quiz' :
       return create_quiz(request)
     elif pk == 'see-questions':
       return see_questions(request)
 
-    quiz = Quiz.objects.get(pk=pk)
+    assessment = AssessmentModel.objects.get(pk=pk)
 
     # Return render
-    return render(request, 'quizes/quiz.html', {'obj': quiz})
+    return render(request, 'quizes/quiz.html', {'obj': assessment})
 
 
 # Display all quiz questions and quiz answer
-@allowed_users(allowed_roles=['common_user', 'fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/', message='You need login to start this assessment!')
+@allowed_users(allowed_roles=['common_user', 'fasilitas_kesehatan', 'admin'], path='/deteksimandiri/', message='You need login to start this assessment!')
 def quiz_data_view(request, pk):
 
     # Getting all quiz object
-    quiz = Quiz.objects.get(pk=pk)
+    assessment = AssessmentModel.objects.get(pk=pk)
 
     # Variable for accomodate question text
     questions = []
 
     # Looping questions
-    for q in quiz.get_questions():
+    for q in assessment.get_questions():
         
         answers = []
 
@@ -57,11 +57,11 @@ def quiz_data_view(request, pk):
         questions.append({str(q): answers})
 
     # Return JsonResponse
-    return JsonResponse({'data': questions, 'time': quiz.time})
+    return JsonResponse({'data': questions, 'time': assessment.time})
 
 
 # Function for calculationg quiz score for user and save it into Result
-@allowed_users(allowed_roles=['common_user', 'fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/', message='You need login to start this assessment!')
+@allowed_users(allowed_roles=['common_user', 'fasilitas_kesehatan', 'admin'], path='/deteksimandiri/', message='You need login to start this assessment!')
 def save_quiz_view(request, pk):
     
     if(request.is_ajax()):
@@ -75,7 +75,7 @@ def save_quiz_view(request, pk):
         for k in data.keys():
 
             # Append question object to questions
-            question = Question.objects.get(text=k)
+            question = QuestionModel.objects.get(text=k)
             questions.append(question)
 
         # State variables for calculatin gsocre
@@ -97,7 +97,7 @@ def save_quiz_view(request, pk):
                 # Question_answer is all answer for each question
                 truth = False
                 max_score = 0
-                question_answer = Answer.objects.filter(question=q)
+                question_answer = AnswerModel.objects.filter(question=q)
                 
                 # Looping questions_answer
                 for a in question_answer:
@@ -140,7 +140,7 @@ def save_quiz_view(request, pk):
 
         # Get user object and quiz object
         user = request.user
-        quiz = Quiz.objects.get(pk=pk)
+        assessment = AssessmentModel.objects.get(pk=pk)
 
         # Executed if user full_score == 0
         if full_score!=0:
@@ -152,47 +152,47 @@ def save_quiz_view(request, pk):
 
         # If user answer all question, create Result onject and send data using JsonResponse
         if full:
-            Result.objects.create(quiz=quiz, user=user, result_score=score)
+            ResultModel.objects.create(assessment=assessment, user=user, result_score=score)
 
-            if score >= quiz.required_score_to_pass:
-                return JsonResponse({'quiz': quiz.name, 'passed': "True", 'score': score, 'results': results, 'full': "True"})
+            if score >= assessment.required_score_to_pass:
+                return JsonResponse({'quiz': assessment.name, 'passed': "True", 'score': score, 'results': results, 'full': "True"})
         
             else:
-                return JsonResponse({'quiz': quiz.name, 'passed': "False", 'score': score, 'results': results, 'full': "True"})
+                return JsonResponse({'quiz': assessment.name, 'passed': "False", 'score': score, 'results': results, 'full': "True"})
         
         # If not, state full as false and send data
         else:
-            return JsonResponse({'quiz': quiz.name, 'passed': "False", 'score': score, 'results': results, 'full': "False"})
+            return JsonResponse({'quiz': assessment.name, 'passed': "False", 'score': score, 'results': results, 'full': "False"})
 
 
 # Function for delete quiz
-@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/', message='You are not authorized to see this page!')
+@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksimandiri/', message='You are not authorized to see this page!')
 def delete_quiz(request, pk):
 
     # Get object and object name
-    quiz_obj = Quiz.objects.get(pk=pk)
-    quiz_name = quiz_obj.name
+    assessment_obj = AssessmentModel.objects.get(pk=pk)
+    assesment_name = assessment_obj.name
 
     # Delete object quiz and send message if delete opations is success
-    quiz_obj.delete()
-    messages.success(request, quiz_name + ' has been deleted!')
+    assessment_obj.delete()
+    messages.success(request, assesment_name + ' has been deleted!')
     
-    # Redirect to deteksi-mandiri
-    return redirect('/deteksi-mandiri/')
+    # Redirect to deteksimandiri
+    return redirect('/deteksimandiri/')
 
 
 # Function for edit quiz
-@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/', message='You are not authorized to see this page!')
+@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksimandiri/', message='You are not authorized to see this page!')
 def edit_quiz(request, pk):
 
     # Get quiz object and create QuizForm instance
-    quiz = Quiz.objects.get(pk=pk)
-    form = QuizForm(instance=quiz)
+    assessment = AssessmentModel.objects.get(pk=pk)
+    form = QuizForm(instance=assessment)
 
     # Check if methos is POST
     if request.method == 'POST':
         # Create QuizForm instance 
-        form = QuizForm(request.POST, instance=quiz)
+        form = QuizForm(request.POST, instance=assessment)
 
         # If form is valid, save quiz
         if form.is_valid():
@@ -200,22 +200,22 @@ def edit_quiz(request, pk):
             form.save()
 
             # Redirect to edit_questions
-            return redirect('/deteksi-mandiri/edit-questions/'+pk)
+            return redirect('/deteksimandiri/edit-questions/'+pk)
 
         # If Form isn't valid
         else :
 
             # Redirect to this page again and send message
             messages.success(request, 'Fill in all fields with valid input!')
-            return redirect('/deteksi-mandiri/edit/'+pk)
+            return redirect('/deteksimandiri/edit/'+pk)
 
     # Render edtiquiz.html and content dictionary
-    content = {'name':quiz.name , 'topic':quiz.topic, 'number_of_questions': quiz.number_of_questions, 'time':quiz.time, 'required_score_to_pass':quiz.required_score_to_pass}
+    content = {'name':assessment.name , 'topic':assessment.topic, 'number_of_questions': assessment.number_of_questions, 'time':assessment.time, 'required_score_to_pass':assessment.required_score_to_pass}
     return render(request, 'quizes/editquiz.html', content)
 
 
 # Function for create Quiz
-@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/', message='You are not authorized to see this page!')
+@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksimandiri/', message='You are not authorized to see this page!')
 def create_quiz(request):
 
     # Create form Quiz
@@ -230,55 +230,55 @@ def create_quiz(request):
         if form.is_valid():
             
             form.save()
-            quiz = Quiz.objects.get(name=request.POST['name'])
+            assessment = AssessmentModel.objects.get(name=request.POST['name'])
 
-            return redirect('/deteksi-mandiri/edit-questions/'+str(quiz.pk))
+            return redirect('/deteksimandiri/edit-questions/'+str(assessment.pk))
 
         # If form isn't valid, send message and redirect to this page again
         else :
             messages.success(request, 'Fill in all fields with valid input!')
-            return redirect('/deteksi-mandiri/create-quiz/')
+            return redirect('/deteksimandiri/create-quiz/')
 
     # Render createquiz.html and dictionary
     return render(request, 'quizes/createquiz.html', {'form': form})
 
 
 # Function for edit question
-@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/', message='You are not authorized to see this page!')
+@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksimandiri/', message='You are not authorized to see this page!')
 def edit_questions(request, pk):
 
     # Get quiz object and create inlineforsmset_factory & formset
-    quiz = Quiz.objects.get(pk=pk)
-    questionFormSet = inlineformset_factory(Quiz, Question, fields=('text', ), extra=1000, can_delete=False, max_num=quiz.number_of_questions)
-    formset = questionFormSet(instance=quiz)
+    assessment = AssessmentModel.objects.get(pk=pk)
+    questionFormSet = inlineformset_factory(AssessmentModel, QuestionModel, fields=('text', ), extra=1000, can_delete=False, max_num=assessment.number_of_questions)
+    formset = questionFormSet(instance=assessment)
 
     # If request method is POST
     if request.method == 'POST':
-        formset = questionFormSet(request.POST, instance=quiz)
+        formset = questionFormSet(request.POST, instance=assessment)
         
         # If form is valid, save form and redirect to deteksi mandiri
         if formset.is_valid():
             formset.save()
 
             messages.success(request, 'Your action has been saved!')
-            return redirect('/deteksi-mandiri/')
+            return redirect('/deteksimandiri/')
         
         # If form isn't valid , send message and redirect to this page again
         else:
 
             messages.success(request, 'Fill in all fields with valid input!')
-            return redirect('/deteksi-mandiri/edit-questions'+str(pk))
+            return redirect('/deteksimandiri/edit-questions'+str(pk))
 
     # Render editquestion.html and dictionary
-    return render(request, 'quizes/editquestion.html', {'formset' : formset, 'quiz' : quiz})
+    return render(request, 'quizes/editquestion.html', {'formset' : formset, 'quiz' : assessment})
 
 
 # Function for see question
-@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/', message='You are not authorized to see this page!')
+@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksimandiri/', message='You are not authorized to see this page!')
 def see_questions(request, pk):
 
     # Get quiz and questions object
-    quiz = Quiz.objects.get(pk=pk)
+    quiz = AssessmentModel.objects.get(pk=pk)
     questions = quiz.get_questions()
 
     # Render seequestions.html and dictionary
@@ -286,11 +286,11 @@ def see_questions(request, pk):
 
 
 # Function for delete question
-@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/', message='You are not authorized to see this page!')
+@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksimandiri/', message='You are not authorized to see this page!')
 def delete_questions(request, pk, pk2):
 
     # Get question object and question name
-    question_obj = Question.objects.get(pk=pk2)
+    question_obj = QuestionModel.objects.get(pk=pk2)
     question_name = question_obj.text
 
     # Delete question object 
@@ -298,16 +298,16 @@ def delete_questions(request, pk, pk2):
 
     # Send message and redirect to see_question
     messages.success(request, question_name + ' has been deleted!')
-    return redirect('/deteksi-mandiri/see-questions/'+str(pk))
+    return redirect('/deteksimandiri/see-questions/'+str(pk))
 
 
 # Function fot edit answers
-@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksi-mandiri/', message='You are not authorized to see this page!')
+@allowed_users(allowed_roles=['fasilitas_kesehatan', 'admin'], path='/deteksimandiri/', message='You are not authorized to see this page!')
 def edit_answers(request, pk, pk2):
 
     # Get question object and create answerFormse and Formset 
-    question = Question.objects.get(pk=pk2)
-    answerFormSet = inlineformset_factory(Question, Answer, fields=('text', 'poin', 'correct',), extra=5, can_delete=True, max_num=5)
+    question = QuestionModel.objects.get(pk=pk2)
+    answerFormSet = inlineformset_factory(QuestionModel, AnswerModel, fields=('text', 'poin', 'correct',), extra=5, can_delete=True, max_num=5)
     formset = answerFormSet(instance=question)
 
     # If request method is POST 
@@ -320,13 +320,13 @@ def edit_answers(request, pk, pk2):
             formset.save()
 
             messages.success(request, 'Your action has been saved!')
-            return redirect('/deteksi-mandiri/see-questions/' + str(pk))
+            return redirect('/deteksimandiri/see-questions/' + str(pk))
 
         # If isn't valid, send message and go to this page again
         else :
 
             messages.success(request, 'Fill in all fields with valid input!')
-            return redirect('/deteksi-mandiri/see-questions/' + str(pk) + '/edit/' + str(pk2))
+            return redirect('/deteksimandiri/see-questions/' + str(pk) + '/edit/' + str(pk2))
 
 
     # Render editanswer.html and fictionary

@@ -1,26 +1,3 @@
-<<<<<<< HEAD
-.background {
-  top: 0;
-  height: 80px;
-  width: 100%;
-  background-color: #333;
-}
-
-.content {
-  padding-top: 1em;
-  padding-left: 8em;
-  padding-right: 8em;
-  margin-top: 80px;
-}
-
-.text-muted {
-  font-size: 1rem;
-}
-
-.modal-body {
-  font-size: 1.1rem;
-}
-=======
 .main-content {
   text-align: center;
 }
@@ -66,4 +43,3 @@ div .edit-btn, div .delete-btn, div .see-btn, div .edit-question-btn , div .dele
   padding-left: 10px;
   padding-right: 10px;
 }
->>>>>>> 99d81d9a1038e3c401a758a44d449b85248bed7d

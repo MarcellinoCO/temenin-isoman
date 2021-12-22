@@ -2,31 +2,31 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# Quiz model
-class Quiz(models.Model):
+# Assessment model
+class AssessmentModel(models.Model):
 
     # Attribute
     name = models.CharField(max_length=100)
     topic = models.CharField(max_length=100)
     number_of_questions = models.IntegerField()
-    time = models.IntegerField(help_text="durations of the quiz in minutes")
+    time = models.IntegerField(help_text="durations of the assessment in minutes")
     required_score_to_pass = models.IntegerField(help_text="required score to diagnosed negative in percent")
 
     # Str function
     def __str__(self):
         return f"{self.name}-{self.topic}"
 
-    # Get all question fro this quiz
+    # Get all question fro this assessment
     def get_questions(self):
         return self.questions.all()[:self.number_of_questions]
 
 
 # Question model
-class Question(models.Model):
+class QuestionModel(models.Model):
 
     # Attribute
     text = models.CharField(max_length=100)
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name="questions")
+    assessment = models.ForeignKey(AssessmentModel, on_delete=models.CASCADE, related_name="questions")
     created = models.DateTimeField(auto_now_add=True)
 
     # Str function
@@ -39,12 +39,12 @@ class Question(models.Model):
 
 
 # Answer model
-class Answer(models.Model):
+class AnswerModel(models.Model):
 
     # Attribute
     text = models.CharField(max_length=100)
     correct = models.BooleanField(default=False)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="answers")
+    question = models.ForeignKey(QuestionModel, on_delete=models.CASCADE, related_name="answers")
     created = models.DateTimeField(auto_now_add=True)
     poin = models.IntegerField()
 
@@ -54,10 +54,10 @@ class Answer(models.Model):
 
 
 # Result model
-class Result(models.Model):
+class ResultModel(models.Model):
 
     # Attribute
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    assessment = models.ForeignKey(AssessmentModel, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     result_score = models.FloatField()
 
