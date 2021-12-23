@@ -8,7 +8,7 @@ from .forms import BedRequestForm
 
 # Create your views here.
 
-
+@csrf_extempt
 def bed_capacity(request):
     response = {}
 
