@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Temenin Isoman - Checklist</title>
+{% endblock meta %}
+
+{% block navbar %}
+  {% with variant='light' %}
+    {{ block.super }}
+  {% endwith %}
+{% endblock navbar %}
+
+{% block content %}
+<div 
+  class="page-header min-vh-80" 
+  style="background-image: url('https://images.unsplash.com/photo-1586883625527-6772e4d16c65?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=manuel-peris-tirado-fFhhUff5PJ8-unsplash.jpg&w=1920');"
+>
+  <span class="mask opacity-6 bg-gradient-dark"></span>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 mx-auto">
+        <div class="text-center">
+          <h1>✅</h1>
+          <h1 class="text-white">Isoman Checklist</h1>
+          <h4 class="fw-normal text-white">
+            Essential Checklist<br/>
+            For Those in Self-Quarantine
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card card-body mx-3 mx-md-4 mt-n5 shadow-xl ">
+  <div class="container">
+    <div class="section text-center p-4">
+      {% if user.is_authenticated %}
+        <h1>🤒</h1>
+        <h2 class="title">Not feeling well?</h2>
+        <h4>You have no ongoing quarantine</h4>
+
+        <button type="button" class="btn btn-primary btn-lg mt-3">Start Quarantine</button>
+
+        <hr/>
+        <h3 class="title mt-4">Still not sure?</h3>
+
+        <!-- Mobile screens -->
+        <div class="d-flex d-md-none flex-column justify-content-start align-items-center">
+          <h5 class="mt-2">Take our Deteksi Mandiri</h5>
+          <a
+            href="/deteksimandiri"
+            role="button"
+            class="btn btn-outline-primary btn-lg w-40"
+            aria-pressed="true"
+          >
+            Deteksi Mandiri
+          </a>
+
+          <h6>or</h6>
+
+          <h5 class="mt-2">Read COVID-19 symptoms</h5>
+          <a
+            href="/obat"
+            role="button"
+            class="btn btn-outline-primary btn-lg w-40"
+            aria-pressed="true"
+          >
+            Symptoms
+          </a>
+        </div>
+
+        <!-- Desktop screens -->
+        <div class="d-none d-md-flex flex-row gap-6 justify-content-center align-items-center">
+          <div class="w-25">
+            <h5 class="mt-2">Take our Deteksi Mandiri</h5>
+            <a
+              href="/deteksi-mandiri"
+              role="button"
+              class="btn btn-outline-primary btn-lg w-100"
+              aria-pressed="true"
+            >
+              Deteksi Mandiri
+            </a>
+          </div>
+
+          <h6>or</h6>
+
+          <div class="w-25">
+            <h5 class="mt-2">Read COVID-19 symptoms</h5>
+            <a
+              href="/obat"
+              role="button"
+              class="btn btn-outline-primary btn-lg w-100"
+              aria-pressed="true"
+            >
+              Symptoms
+            </a>
+          </div>
+        </div>
+      {% else %}
+        
+        <h4 class="title">You are not logged in</h4>
+        <p>Please log in or sign up to continue</p>
+
+        <div class="d-flex flex-row justify-content-center gap-3">
+          <a
+            href="/login"
+            role="button"
+            class="btn btn-primary btn-lg"
+            aria-pressed="true"
+          >
+            Log In
+          </a>
+
+          <a
+            href="/signup"
+            role="button"
+            class="btn btn-outline-primary btn-lg"
+            aria-pressed="true"
+          >
+            Sign Up
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock content %}

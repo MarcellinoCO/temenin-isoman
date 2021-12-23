@@ -26,8 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # Please set SECRET_KEY environment variable in your production environment
 # (e.g. Heroku).
-SECRET_KEY = os.getenv(
-    'SECRET_KEY', 'django-insecure-cv8-o=1#mv80g-1d0%kb5gu7t7y24th(sj-g^d@ox%ugu2%x^+')
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-cv8-o=1#mv80g-1d0%kb5gu7t7y24th(sj-g^d@ox%ugu2%x^+')
 
 # Automatically determine environment by detecting if DATABASE_URL variable.
 # DATABASE_URL is provided by Heroku if a database add-on is added
@@ -56,12 +55,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mathfilters',
+    'bed_capacity',
+    'checklist',
+    'deteksimandiri',
+    'emergency_contact',
+    'happy_notes',
     'main',
     'obat',
-    'deteksi_mandiri',
-    'bed_capacity',
     'tips_and_tricks',
-    'happy_notes',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -186,3 +189,10 @@ for directory in [*STATICFILES_DIRS, STATIC_ROOT]:
 # Enable compression and caching features of whitenoise.
 # You can remove this if it causes problems on your setup.
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.SUCCESS: 'success',
+    messages.ERROR: 'danger',
+}

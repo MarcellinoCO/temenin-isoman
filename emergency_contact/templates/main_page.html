@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    {% with variant='dark' %}
+        {{block.super}}
+    {% endwith %}
+{% endblock navbar %}
+
+{% block meta %}
+    <title>Temenin Isoman</title>
+
+    <!--Modal scripts-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <!--local css and js scripts-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/static.css' %}">
+{% endblock meta %}
+
+{% block content %}
+<!-- Modal -->
+<div class="modal fade" id="rsModal" tabindex="-1" role="dialog" aria-labelledby="rsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rsModalLabel">Modal RS</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="kalimat-telepon"></p>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Tidak</a>
+                <a id="NomorTelepon" href="#" type="button" class="btn bg-gradient-primary">Ya</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editRSModal" tabindex="-1" role="dialog" aria-labelledby="editRSModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editRs">Modal RS</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-edit-rs" action="" method="POST">
+                    {% csrf_token %}
+                    <fieldset>
+                        <div class="input-group input-group-outline my-3">
+                            <input placeholder="Nama" id="edit-nama" name="nama" type="text" class="form-control"
+                                required>
+                        </div>
+                        <div class="input-group input-group-outline my-3">
+                            <input placeholder="Alamat" id="edit-alamat" name="alamat" type="text" class="form-control"
+                                required>
+                        </div>
+                        <div class="input-group input-group-outline my-3">
+                            <input placeholder="Nomor Telepon" id="edit-telepon" name="telepon" type="number"
+                                class="form-control" required>
+                        </div>
+                        <div class="input-group input-group-static mb-4">
+                            <label for="daerah" class="ms-0">Kota</label>
+                            <select class="form-control" name="daerah" id="daerah" required>
+                                <option id="edit-daerah" hidden>Pilih Kota</option>
+                                {% for daerah in list_daerah %}
+                                <option value="{{daerah.id}}">{{daerah.daerah}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <h6>Jika kota yang ingin dipilih belum berada di dalam daftar, silahkan klik <u><a
+                                    href="/emergency-contact/add-daerah">di sini</a></u>.</h6>
+                    </fieldset>
+                    <div class="modal-footer">
+                        <a id="hapusRs" class="btn bg-gradient-secondary">Hapus</a>
+                        <button id="btnEditRs" href="#" type="submit" class="btn bg-gradient-primary">Edit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h1 class="text-dark mt-6 text-center">Emergency Contacts</h1>
+<div class="row container">
+    <div class="col-12 col-lg-6 justify-content-center">
+        <div class="row"></div>
+        {% if user.is_authenticated %}
+        <h3 class="text-start mt-4">Pilih Kota Anda Saat Ini</h3>
+        <select id="pilihDaerah">
+            <option hidden>Pilih Kota</option>
+            {% for daerah in list_daerah %}
+            <option value="{{daerah.id}}">{{daerah.daerah}}</option>
+            {% endfor %}
+        </select>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} text-white" id="message" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="card mt-5">
+            <div class="table-responsive">
+                <table class="table align-items-center mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                Rumah Sakit
+                            </th>
+                            <th
+                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                Nomor Telepon</th>
+                        </tr>
+                    </thead>
+                    <tbody id="container-rumah-sakit">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="mt-5">
+            {% if user.groups.all.0.name == 'fasilitas_kesehatan'%}
+            <div class="row">
+                <div class="col">
+                    <button class="btn btn-primary container-fluid py-3" type="button"
+                        onclick="location.href = '/emergency-contact/add-rs';" id="addRSButton">Edit Rumah
+                        Sakit</button>
+                </div>
+                <div class="col">
+                    <button class="btn btn-primary container-fluid py-3" type="button"
+                        onclick="location.href = '/emergency-contact/add-daerah';" id="addRSButton">Edit
+                        Kota</button>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% else %}
+            <h4 class="mt-5"><a href="/login/">Login</a> untuk dapat melihat emergency contacts pada masing-masing kota.</h4>
+        {% endif %}
+    </div>
+    <div class="col-12 col-lg-5 ms-auto me-auto ms-lg-auto me-lg-5">
+        <div class="card d-flex blur justify-content-center shadow-lg my-sm-0 my-sm-6 mt-8 mb-5">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                <div class="bg-gradient-primary shadow-primary border-radius-lg p-3">
+                    <h3 class="text-center text-white text-primary mb-0">Contact us</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="iconWA" class="mt-4 mb-5">
+                    <a href="tel:0318430313">
+                        <i class="fas fa-phone"></i>
+                    </a>
+                </div>
+                <p class="pb-3 text-center">
+                    Tekan gambar untuk segera terhubung ke hotline utama.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div id="hotline">
+        <p class="my-0">Hotline Covid-19</p>
+        <h3 class="my-0">119</h3>
+    </div>
+</div>
+
+{% if user.groups.all.0.name != 'fasilitas_kesehatan'%}
+    <style>
+        tr>td:nth-child(3){
+        display:none;
+        }
+    </style>
+{% endif %}
+
+<script>
+    setTimeout(() => {
+        if ($('#message').length > 0) {
+            $('#message').remove();
+        }
+    }, 2000);
+</script>
+
+{% endblock content %}>
