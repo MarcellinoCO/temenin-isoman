@@ -2,12 +2,13 @@ from django.shortcuts import render
 from django.core import serializers
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import RumahSakit, BedRequest, Wilayah
 from .forms import BedRequestForm
 
 # Create your views here.
-
+@csrf_exempt
 def bed_capacity(request):
     response = {}
 
