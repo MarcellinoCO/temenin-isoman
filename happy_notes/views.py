@@ -3,6 +3,9 @@ from django.contrib.auth.decorators import login_required
 from .models import Note
 from .forms import NoteForm
 from django.http import JsonResponse, HttpResponse
+from django.core import serializers
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 def index(request):
@@ -38,4 +41,19 @@ def load_notes_view(request):
             'uploaded': obj.uploaded
          }
          data.append(item)
-      return JsonResponse({'data':data})
+   return JsonResponse({'data':data})
+
+def notes_json(request):
+   data = serializers.serialize('json', Note.objects.all())
+
+   return HttpResponse(data, content_type="application/json")
+
+@csrf_exempt
+def add_from_flutter(request):
+    body_unicode = request.body.decode('utf-8')
+    data = json.loads(body_unicode)
+    new_article = Note(**data)
+    new_article.save()
+    return JsonResponse({
+        "success": "New Note Successfully Added",
+    })
