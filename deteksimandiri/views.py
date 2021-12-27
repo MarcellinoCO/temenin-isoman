@@ -1,14 +1,298 @@
+from types import new_class
+from typing import final
+from django.contrib.auth.models import AnonymousUser
+from django.http import response
+from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.views.decorators import csrf
 from django.views.generic import ListView
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from main.decorators import allowed_users
 from django.contrib import messages
 from django.forms import inlineformset_factory
-
+from django.core import serializers 
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 from .forms import QuizForm
 from .models import *
+
+def get_assessments(request):
+    assessment = AssessmentModel.objects.all()
+   
+    data = serializers.serialize('json', assessment)
+
+    return HttpResponse(data, content_type='application/json')
+
+def get_assessment(request, pk):
+    assessment = AssessmentModel.objects.get(pk = pk)
+
+    ls = []
+    dc = {}
+
+    dc["name"] = assessment.name
+    dc["topic"] = assessment.topic
+    dc["nomber_of_question"] = assessment.number_of_questions
+    dc["required_score_to_pass"] = assessment.required_score_to_pass
+
+    ls.append(dc)
+
+    jsonStr = json.dumps(ls)
+
+    # Return JsonResponse
+    return HttpResponse(jsonStr, content_type='application/json')
+    
+
+def get_question(request, pk):
+
+    # Getting all quiz object
+    assessment = AssessmentModel.objects.get(pk=pk)
+
+    # Variable for accomodate question text
+    questions = []
+
+    # Looping questions
+    for q in assessment.get_questions():
+   
+        # Append question to the list
+        questions.append({"question" : str(q), "pk" : q.pk})
+
+    jsonStr = json.dumps(questions)
+
+    # Return JsonResponse
+    return HttpResponse(jsonStr, content_type='application/json')
+
+def get_option(request, pk, pk2) :
+
+    questions = QuestionModel.objects.get(pk=pk2)
+ 
+    # Variable for accomodate question text
+    answers = []
+
+    # Looping questions
+    for q in questions.get_answers():
+        answers.append({"answer" : q.text, "poin" : q.poin, "correct" : q.correct, "pk" : q.pk, "question" : q.question.pk, "delete" : False})
+    
+    jsonStr = json.dumps(answers)
+
+    # Return JsonResponse
+    return HttpResponse(jsonStr, content_type='application/json')
+
+@csrf_exempt
+def save_assessment(request, pk):
+
+    if request.method == "POST" :
+        user_answers = json.loads(request.body)["answers"]
+        assessment = AssessmentModel.objects.get(pk = pk)
+        questions = assessment.get_questions()
+
+        score = 0
+        full_score = 0
+        result = []
+        inc = 0
+        lulus = False
+
+        for q in questions:
+            option = q.get_answers()
+            result.append({})
+            max_score = 0
+            truth = False
+
+            for o in option:
+                if o.text == user_answers[inc]:
+                    score += o.poin
+
+                    if o.correct :
+                        truth = True
+                
+                if o.poin > max_score :
+                    max_score = o.poin
+            
+            full_score += max_score
+
+            result[inc]['question'] = q.text
+            result[inc]['answer'] = user_answers[inc]
+            result[inc]['truth'] = truth 
+            result[inc]['correct'] = truth 
+
+            inc = inc+1
+
+        presentase = 0
+        
+        if (full_score == 0) :
+            presentase = 0
+        else :
+            presentase = round(score/full_score *100, 2)
+        
+
+        if presentase >= assessment.required_score_to_pass :
+            lulus = True
+
+        final_result = [{"assessment" : assessment.name, "score_to_pass" : assessment.required_score_to_pass , "score" : presentase, "lulus" : lulus, "result" : result}]
+        
+        jsonStr = json.dumps(final_result)
+
+        user = request.user
+
+        if  type(user) == User:
+            ResultModel.objects.create(assessment=assessment, user=user, result_score=presentase)
+
+        # Return JsonResponse
+        return HttpResponse(jsonStr, content_type='application/json')
+    
+    return HttpResponse("")
+
+@csrf_exempt
+def delete_assessment(request, pk) :
+
+    assessment = AssessmentModel.objects.get(pk = pk) 
+    assessment.delete()
+    
+    return HttpResponse("")
+
+@csrf_exempt
+def create_assessment(request):
+
+    ls  = []
+
+    if request.method == "POST" :
+        name = json.loads(request.body)["name"]
+        topic = json.loads(request.body)["topic"]
+        number_of_question = int(json.loads(request.body)["number_of_question"])
+        required_score_to_pass = int(json.loads(request.body)["required_score_to_pass"])
+
+        assessment = AssessmentModel.objects.create(name= name, topic= topic, number_of_questions = number_of_question, required_score_to_pass = required_score_to_pass, time= 5)
+        ls.append({'name' : name, 'topic' : topic, 'number_of_question' : number_of_question, 'required_score_to_pass' : required_score_to_pass, 'pk' : assessment.pk})
+    
+    jsonStr = json.dumps(ls)
+
+    return HttpResponse(jsonStr, content_type='application/json')
+
+
+@csrf_exempt
+def edit_assessment(request, pk):
+
+    ls  = []
+
+    if request.method == "POST" :
+        name = json.loads(request.body)["name"]
+        topic = json.loads(request.body)["topic"]
+        number_of_question = int(json.loads(request.body)["number_of_question"])
+        required_score_to_pass = int(json.loads(request.body)["required_score_to_pass"])
+
+        assessment = AssessmentModel.objects.get(pk = pk);
+
+        if number_of_question > assessment.number_of_questions :
+            l = assessment.number_of_questions
+            for i in range(l, number_of_question) :
+                QuestionModel.objects.create(text = "", assessment=assessment)
+        else :
+            l = assessment.number_of_questions
+            data = QuestionModel.objects.filter(assessment=assessment)[number_of_question:l]
+
+            for i in data:
+                i.delete()
+
+        assessment.name = name;
+        assessment.topic = topic;
+        assessment.number_of_questions = number_of_question;
+        assessment.required_score_to_pass = required_score_to_pass;
+
+        assessment.save()
+
+        ls.append({'name' : name, 'topic' : topic, 'number_of_question' : number_of_question, 'required_score_to_pass' : required_score_to_pass, 'pk' : assessment.pk})
+    
+    jsonStr = json.dumps(ls)
+
+    return HttpResponse(jsonStr, content_type='application/json')
+
+@csrf_exempt
+def create_question(request, pk):
+
+    if request.method == "POST":
+        assessment  = AssessmentModel.objects.get(pk = pk)
+        data  = json.loads(request.body)["data"]
+
+        for i in data:
+            QuestionModel.objects.create(assessment= assessment, text=i)
+        
+    return HttpResponse("")
+
+@csrf_exempt
+def edit_question(request, pk):
+
+    if request.method == "POST":
+        assessment  = AssessmentModel.objects.get(pk = pk)
+        data  = json.loads(request.body)["data"]
+
+        for i in data:
+            q = QuestionModel.objects.get(pk = int(i["pk"]))
+            q.text = i["question"]
+            q.save()
+        
+    return HttpResponse("")
+
+
+@csrf_exempt
+def delete_question(request, pk) :
+
+    question = QuestionModel.objects.get(pk = pk) 
+    assessment = question.assessment
+
+    assessment.number_of_questions = assessment.number_of_questions - 1
+    question.delete()
+    assessment.save()
+    
+    return HttpResponse("")
+
+@csrf_exempt
+def save_option(request):
+
+    if request.method == "POST" :
+        data = json.loads(request.body)["data"]
+
+        for i in data:
+
+            nottruth = i["answer"] == '' or i["poin"] == ''
+
+            if nottruth:
+                continue
+
+            if i["delete"]:
+                            
+                # Answer deleted
+                try :
+                    pk = i["pk"]
+                    answer = AnswerModel.objects.get(pk = pk)
+                    answer.delete()
+                except:
+                    continue
+
+            else :
+               
+                try:
+
+                    #Answer Edited
+                    question = QuestionModel.objects.get(pk = i["question"])
+                    answer = AnswerModel.objects.get(pk = i["pk"])
+                    answer.text = i["answer"]
+                    answer.poin = int(i["poin"])
+                    answer.correct = i["correct"]
+
+                    answer.save()
+
+                except:
+                    # Answer Created
+                    pk = i["question"]
+                    question = QuestionModel.objects.get(pk = pk)
+                    answer = AnswerModel.objects.create(text = i["answer"], correct = i["correct"], question = question, poin= int(i["poin"]))
+                  
+
+    return HttpResponse("")
+
+
+        
 
 # Function for render main,html and display quiz object
 def deteksi_mandiri_view(request):
