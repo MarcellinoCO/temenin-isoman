@@ -1,10 +1,13 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Task, Day, Quarantine, QuarantineDay, QuarantineTask
+from .utils import *
 
 
+@csrf_exempt
 def checklist_home(request):
     if request.user.is_authenticated:
         quarantine = get_current_quarantine(request.user.username)
@@ -26,95 +29,71 @@ def checklist_home(request):
     return render(request, "checklist_home.html", {})
 
 
+@csrf_exempt
 def start_quarantine(request):
-    if request.method == "POST":
-        body = request.POST
-        if not body:
-            return JsonResponse({
-                "result": "error",
-                "message": "Request body not found!"
-            })
+    if request.method != "POST":
+        return JsonResponse({"result": "error", "message": "Must use POST method!"}, status=405)
 
-        username = body["username"]
-        if not username:
-            return JsonResponse({
-                "result": "error",
-                "message": "Parameter 'username' not found in request body!"
-            })
+    if not request.user.is_authenticated:
+        return JsonResponse({"result": "error", "message": "Not yet authenticated!"}, status=403)
 
-        # Get quarantine reference from username.
-        quarantine = get_current_quarantine(username)
-        if quarantine:
-            return JsonResponse({
-                "result": "error",
-                "message": f"A running quarantine for {username} exists!"
-            })
+    username = request.user.username
 
-        quarantine = Quarantine.objects.create(username=username)
+    # Get quarantine reference from username.
+    quarantine = get_current_quarantine(username)
+    if quarantine:
+        return JsonResponse({"result": "error", "message": f"A running quarantine for {username} exists!"}, status=409)
 
-        return JsonResponse({"result": "success"})
-    else:
-        return JsonResponse({
-            "result": "error",
-            "message": "Only accepting POST request!"
-        })
+    quarantine = Quarantine(username=username)
+    quarantine.save()
+
+    days = Day.objects.all()
+    for day in days:
+        quarantine_day = QuarantineDay(quarantine=quarantine, day=day)
+        quarantine_day.save()
+
+        tasks = day.tasks.all()
+        for task in tasks:
+            quarantine_task = QuarantineTask(day=quarantine_day, task=task)
+            quarantine_task.save()
+
+    return JsonResponse({"result": "success"}, status=200)
 
 
+@csrf_exempt
 def get_quarantine_data(request):
-    if request.method == "POST":
-        body = request.POST
-        if not body:
-            return JsonResponse({
-                "result": "error",
-                "message": "Request body not found!"
+    if request.method != "POST":
+        return JsonResponse({"result": "error", "message": "Must use POST method!"}, status=405)
+
+    if not request.user.is_authenticated:
+        return JsonResponse({"result": "error", "message": "Not yet authenticated!"}, status=403)
+
+    username = request.user.username
+
+    # Get quarantine reference from username.
+    quarantine = get_current_quarantine(username)
+
+    if not quarantine:
+        return JsonResponse({"result": "error", "message": f"No quarantine data for user {username}!"}, status=404)
+
+    # Construct quarantine data for page data.
+    quarantine_data = []
+    for day in quarantine.quarantineday_set.all():
+        current_day = {"id": day.id, "day": day.day_id, "tasks": []}
+
+        for task in day.quarantinetask_set.all():
+            task_data = Task.objects.get(pk=task.task_id)
+            current_day["tasks"].append({
+                "id": task.task_id,
+                "title": task_data.name,
+                "description": task_data.description,
+                "done": task.is_done
             })
 
-        username = body["username"]
-        if not username:
-            return JsonResponse({
-                "result": "error",
-                "message": "Parameter 'username' not found in request body!"
-            })
+        quarantine_data.append(current_day)
 
-        # Get quarantine reference from username.
-        quarantine = get_current_quarantine(username)
-
-        # Construct quarantine data for page data.
-        quarantine_data = []
-        for day in quarantine.quarantineday_set.all():
-            current_day = {"id": day.id, "day": day.day_id, "tasks": []}
-
-            for task in day.quarantinetask_set.all():
-                task_data = Task.objects.get(pk=task.task_id)
-                current_day["tasks"].append({
-                    "id": task.task_id,
-                    "title": task_data.name,
-                    "description": task_data.description,
-                    "done": task.is_done
-                })
-
-            quarantine_data.append(current_day)
-
-        return JsonResponse({
-            "result": "success",
-            "quarantineStart": quarantine.start_timestamp,
-            "quarantineData": quarantine_data
-        })
-    else:
-        return JsonResponse({
-            "result": "error",
-            "message": "Only accepting POST request!"
-        })
-
-
-def get_current_quarantine(username):
-    # Get quarantine length in days.
-    quarantine_length = len(Day.objects.all())
-    max_start_timestamp = timezone.now() - timezone.timedelta(days=quarantine_length)
-
-    # Get current user's already running quarantine.
-    quarantines = Quarantine.objects \
-        .filter(username=username) \
-        .filter(start_timestamp__gt=max_start_timestamp)
-
-    return quarantines[0] if quarantines else None
+    return JsonResponse({
+        "result": "success",
+        "quarantineStart": quarantine.start_timestamp,
+        "quarantineData": quarantine_data
+    }, status=200)
