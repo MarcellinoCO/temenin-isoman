@@ -84,6 +84,12 @@ def save_assessment(request, pk):
 
     if request.method == "POST" :
         user_answers = json.loads(request.body)["answers"]
+
+        ls = json.loads(request.body)["user"]
+        user_username = ""
+        if len(ls) > 0:
+            user_username = ls[0]
+
         assessment = AssessmentModel.objects.get(pk = pk)
         questions = assessment.get_questions()
 
@@ -133,10 +139,8 @@ def save_assessment(request, pk):
         
         jsonStr = json.dumps(final_result)
 
-        user = request.user
-
-        if  type(user) == User:
-            ResultModel.objects.create(assessment=assessment, user=user, result_score=presentase)
+        user = User.objects.get(username = user_username)
+        ResultModel.objects.create(assessment=assessment, user=user, result_score=presentase)
 
         # Return JsonResponse
         return HttpResponse(jsonStr, content_type='application/json')
