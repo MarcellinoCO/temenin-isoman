@@ -1,6 +1,7 @@
+import json
 from django.shortcuts import render
 from django.core import serializers
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import login_required
 
 from .models import Daerah, RumahSakit
@@ -43,11 +44,11 @@ def add_daerah(request):
     return render(request, 'add_daerah.html', response)
 
 def daerah_json(request):
-    data = serializers.serialize('json', RumahSakit.objects.all())
+    data = serializers.serialize('json', Daerah.objects.all())
     return HttpResponse(data, content_type="application/json")
 
 def rs_json(request):
-    data = serializers.serialize('json', Daerah.objects.all())
+    data = serializers.serialize('json', RumahSakit.objects.all())
     return HttpResponse(data, content_type="application/json")
 
 def update_rs(request, pk):
@@ -84,3 +85,23 @@ def hapus_daerah(request, pk):
     messages.success(request, row.daerah + " Berhasil dihapus")
     row.delete()
     return HttpResponseRedirect('/emergency-contact/add-daerah')
+
+@csrf_exempt
+def add_rs_from_flutter(request):
+    body_unicode = request.body.decode('utf-8')
+    data = json.loads(body_unicode)
+    new_rs = RumahSakit(**data)
+    new_rs.save()
+    return JsonResponse({
+        "success": "New RS Successfully Added",
+    })
+
+@csrf_exempt
+def add_daerah_from_flutter(request):
+    body_unicode = request.body.decode('utf-8')
+    data = json.loads(body_unicode)
+    new_daerah = Daerah(**data)
+    new_daerah.save()
+    return JsonResponse({
+        "success": "New Daerah Successfully Added",
+    })

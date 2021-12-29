@@ -12,5 +12,7 @@ urlpatterns = [
     path('update_rs/<str:pk>/',  update_rs),
     path('hapus_rs/<str:pk>/',  hapus_rs),
     path('update_daerah/<str:pk>/',  update_daerah),
-    path('hapus_daerah/<str:pk>/',  hapus_daerah)
+    path('hapus_daerah/<str:pk>/',  hapus_daerah),
+    path('add-rs-from-flutter', add_rs_from_flutter, name='add_rs_from_flutter'),
+    path('add-daerah-from-flutter', add_daerah_from_flutter, name='add_daerah_from_flutter')
 ]
