@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Daerah, RumahSakit
 from .forms import DaerahForm, RumahSakitForm
