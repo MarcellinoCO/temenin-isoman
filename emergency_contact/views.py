@@ -46,6 +46,10 @@ def daerah_json(request):
     data = serializers.serialize('json', RumahSakit.objects.all())
     return HttpResponse(data, content_type="application/json")
 
+def rs_json(request):
+    data = serializers.serialize('json', Daerah.objects.all())
+    return HttpResponse(data, content_type="application/json")
+
 def update_rs(request, pk):
     row = RumahSakit.objects.get(id=pk)
     form = RumahSakitForm(request.POST or None, instance=row)
