@@ -1,0 +1,48 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block meta %}
+<title>{{ obj.name }}</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/quizes/quiz.css' %}"/>
+<script type="text/javascript" src="{% static 'js/quizes/quiz.js' %}"></script>
+{% endblock %} 
+
+{% block navbar %} 
+  {% with variant='dark' %} 
+    {{ block.super }} 
+  {% endwith %} 
+{% endblock navbar %} 
+
+{% block content %}
+<div class="main-content">
+  <div class="content">
+    <div class="rows">
+      <div class="columns c1">
+        <p class="title">{{obj.name}}</p>
+      </div>
+      <div class="columns c2">
+        <p id="timer">countdown</p>
+      </div>
+    </div> 
+    <div id="result" class="rows">
+      <div class="columns c1">
+        <p class="info">Score to pass: {{obj.required_score_to_pass}}</p>
+        <div class="info" id="score-box"></div>
+      </div>
+      <div class="columns c2">
+        <a href="/deteksimandiri/" class="btn btn-danger">Go Back</a>
+      </div>
+    </div>
+    <div class="disp_none" id="sumarry-title">
+      <hr>
+      <div class="h6">SUMMARY</div>
+    </div>
+    <div id="summary"></div>
+    <form id="quiz-form" class="mt-3 mb-3">
+      {% csrf_token %}
+      <div id="quiz-box"></div>
+      <button type="submit" class="btn btn-primary mt-3">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,209 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block meta %}
+<title>Info Bed Capacity</title>
+
+<!--Modal scripts-->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!--local css and js scripts-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{% static 'js/bed_capacity.js' %}"></script>
+<link rel="stylesheet" href='{% static "css/bed_capacity.css" %}'>
+
+{% endblock meta %} 
+
+{% block content %}
+<!--Main header-->
+<div class="main-header page-header min-vh-50">
+    <div class="row">
+        <div class="col-md-12" style="margin-left: 20%;">
+            <h1 class="text-white">Info Bed Capacity</h1>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Konfirmasi -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Form Pendaftaran ke <span id="selected-nama-title"></span></h5>
+    </div>
+    <form action="" method="post">
+        <div class="modal-body">
+            <!--FIeld untuk diisi form-->
+            {% csrf_token %}
+            <input type="hidden" name="rs_input" id="rs_input" maxlength="10" value="">
+            <input type="hidden" name="rs_name" id="rs_name" maxlength="10" value="">
+            <div class="mb-3">
+                <label for="id_nama" class="form-label form-control-sm">Nama</label>
+                <input type="text" class="border border-dark form-control" style="padding-left: 15px;" name="nama" maxlength="40" required id="id_nama" placeholder="  Nama">
+            </div>
+
+            <div class='mb-3'>
+                <label for="" class="form-label">Gender</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" id="id_gender_0" value="L" checked>
+                    <label class="form-check-label" for="id_gender_0">
+                    Laki-Laki
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" id="id_gender_1" value="P">
+                    <label class="form-check-label" for="id_gender_1">
+                    Perempuan
+                    </label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_umur" class="form-label form-control-sm">Umur</label>
+                <input type="number" class="border border-dark form-control" style="padding-left: 15px;" name="umur" required id="id_umur" placeholder="  Umur">
+            </div>
+            <div class="mb-3">
+                <label for="id_alamat" class="form-label form-control-sm">Alamat</label>
+                <input name="alamat" class="border border-dark form-control" style="padding-left: 15px;" cols="40" rows="10" maxlength="60" required id="id_alamat" placeholder="  Alamat"></input>
+            </div>
+            <div class="mb-3">
+                <label for="id_telp" class="form-label form-control-sm">Nomor Telepon</label>
+                <input type="text" class="border border-dark form-control" style="padding-left: 15px;" name="telp" maxlength="15" required id="id_telp" placeholder="  Nomor Telpon">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+            <input type="submit" class="btn btn-success" value="Request"
+            onclick="
+            sessionStorage.setItem('has-been-here', 1);
+            sessionStorage.setItem('nama-rs-last', $('#rs_name').val());
+            sessionStorage.setItem('nama-req-last', $('#id_nama').val());
+            "
+            >
+        </div>
+    </form>
+    </div>
+</div>
+</div>
+
+<!--Modal Sukses-->
+<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Sukses Mengirimkan Permintaan</h5>
+        </div>
+        <div class="modal-body">
+          <p>Sukses mengirimkan permintaan bed untuk</p>
+          <ul>
+              <li>Nama: <span id='nama-req-last'></span></li>
+              <li>RS: <span id='nama-rs-last'></span></li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" id="close-btn" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!--Contents-->
+<div class="container mt-n5">
+    <div class="row">
+        <!--Card bagian untuk menunjukkan rumah sakit-->
+        <div class="col-md-8">
+            <div class="card">
+                <!--Info rumah sakit-->
+                <div class="card-body" id="content-table">
+                    <!--Selector WIlayah-->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <select class="border border-dark form-select form-select-sm" id="select-wil" aria-label="Default select example" style="padding-left: 1rem; padding-right: 1rem;">
+                                <option selected>---</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            {% if user.is_authenticated %}
+                            <button type="button" class="btn btn-info btn-sm" onclick="location.href='/bed-capacity/adm'">Manage</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <hr>
+
+                    <!--Table Head-->
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col-md-9">
+                            <h4>Rumah sakit</h4>
+                        </div>
+                        <div class="col-md-3">
+                            <h4>Kapasitas</h4>
+                        </div>
+                    </div>
+                    <hr>
+                    <!--Table Content-->
+                    <!--Added by jQuery later-->
+                    <div id="table-content"></div>
+                </div>
+
+                <!--prev/next button-->
+                <div class="card-body">
+                    <div>
+                        <div style="float: right;" class="btn-group btn-group-sm" role="group"aria-label="Basic example">
+                            <button type="button" class="nav-btn btn btn-secondary">Prev</button>
+                            <button type="button" class="nav-btn btn btn-secondary">Next</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!--Card bagian untuk menunjukkan info rumah sakit yang ditunjuk-->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 id="selected-nama" style="margin-bottom: 20px;">Silakan Pilih Rumah Sakit</h4>
+                    <hr>
+                    <!--Data mengenai rumah sakit yang terpilih-->
+                    <div>
+                        <!--Alamat-->
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h6 style="float:right;">Alamat:</h6>
+                            </div>
+                            <div class="col-md-9">
+                                <p id="selected-alamat"></p>
+                            </div>
+                        
+                        </div>
+                        
+                        <!--Telepon-->
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h6 style="float:right">Telepon:</h6>
+                            </div>
+                            <div class="col-md-9">
+                                <p id="selected-telp"></p>
+                            </div>
+                        </div>
+
+                        <!--Kapasitas-->
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h6 style="float:right">Kapasitas:</h6>
+                            </div>
+                            <div class="col-md-9">
+                                <p id="selected-kapasitas"></p>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="btn btn-light" style='float: right; margin-top: 80px;' id="request-btn">Request</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

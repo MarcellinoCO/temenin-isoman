@@ -1,0 +1,57 @@
+.content {
+  padding-top: 1em;
+  padding-left: 8em;
+  padding-right: 8em;
+  margin-top: 80px;
+}
+
+.title {
+  font-size: 2.5em;
+  font-weight: bolder;
+  color: #e91e63;
+}
+
+.disp_none {
+  display: none;
+}
+
+.rows {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.c1 {
+  width: 85%;
+}
+
+.c2 {
+  width: 15%;
+  text-align: right;
+}
+
+#sumarry-title {
+  text-align: center;
+}
+
+#timer {
+  font-size: 2em;
+  margin-top: 0.2em;
+}
+
+.btn-danger {
+  padding: 1.2em;
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  margin-top: 1.2em;
+}
+
+.info {
+  font-size: 1em;
+  font-weight: bolder;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+#result {
+  display: none;
+}

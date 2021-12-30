@@ -6,6 +6,7 @@ from django.core import serializers
 from django.http.response import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+
 # Create your views here.
 def index(request):
     obats = Obat.objects.all()
@@ -49,6 +50,7 @@ def edit_obat(request):
     return HttpResponseRedirect("/obat")
 
 def json(request):
+    obats = Obat.objects.all()
     data = serializers.serialize('json', Obat.objects.all())
     return HttpResponse(data, content_type="application/json")
 

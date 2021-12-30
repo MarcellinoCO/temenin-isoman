@@ -22,5 +22,13 @@ urlpatterns = [
     path('', include('main.urls')),
     path('obat/', include('obat.urls')),
     path('', include('django.contrib.auth.urls')),
-    path('deteksi-mandiri/', include('deteksi_mandiri.urls'))
+
+    path('bed-capacity/', include('bed_capacity.urls')),
+    path('checklist/', include('checklist.urls')),
+    path('deteksimandiri/', include('deteksimandiri.urls')),
+    path('emergency-contact/', include('emergency_contact.urls')),
+    path('happy-notes/', include('happy_notes.urls')),
+    path('obat/', include('obat.urls')),
+    path('tips-and-tricks/', include('tips_and_tricks.urls')),
+    path('user/', include('user.urls')),
 ]
