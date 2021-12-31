@@ -48,7 +48,7 @@ def edit_obat(request):
 
     return HttpResponseRedirect("/obat")
 
-def json(request):
+def ajson(request):
     data = serializers.serialize('json', Obat.objects.all())
     return HttpResponse(data, content_type="application/json")
 
