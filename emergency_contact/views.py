@@ -87,7 +87,7 @@ def hapus_daerah(request, pk):
     row.delete()
     return HttpResponseRedirect('/emergency-contact/add-daerah')
 
-def rs_json(request, id):
+def rs_filtered(request, id):
     data = serializers.serialize(
         'json', RumahSakit.objects.filter(daerah=id))
     return HttpResponse(data, content_type="application/json")
