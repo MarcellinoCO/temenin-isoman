@@ -17,6 +17,7 @@ def index(request):
     response = {'list_daerah':list_daerah, 'list_rs':list_rs}
     return render(request, "main_page.html", response)
 
+@csrf_exempt
 def add_rs(request):
     list_daerah = Daerah.objects.all().values()
     list_rs = RumahSakit.objects.all().values()
@@ -30,6 +31,7 @@ def add_rs(request):
     response = {'form': form, 'list_rs':list_rs, 'list_daerah':list_daerah}
     return render(request, 'add_rs.html', response)
 
+@csrf_exempt
 def add_daerah(request):
     list_daerah = Daerah.objects.all().values()
     form = DaerahForm(request.POST or None)
