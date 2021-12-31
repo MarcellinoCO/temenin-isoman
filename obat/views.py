@@ -56,10 +56,19 @@ def json(request):
 
 @csrf_exempt
 def add_from_flutter(request):
-    body_unicode = request.body.decode('utf-8')
-    data = json.loads(body_unicode)
-    new_obat = Obat(**data)
-    new_obat.save()
-    return JsonResponse({
-        "success": "New Obat Successfully Added",
-    })
+    if (request.method == "POST"):
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+
+        penyakit = body["penyakit"]
+        penjelasan = body["penjelasan"]
+        daftar_obat = body["daftar_obat"]
+
+        try:
+            obat = Obat(penyakit=penyakit, penjelasan=penjelasan, daftar_obat=daftar_obat)
+            obat.save()
+            return HttpResponse("Successful", status=200)
+        except Exception:
+            print("An error occurred")
+            return HttpResponse("An error occurred", status=400, content_type="text/plain")
+    return HttpResponse("Must use POST Method", status=405, content_type="text/plain")
