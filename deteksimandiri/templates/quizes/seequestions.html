@@ -1,0 +1,81 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block meta%}
+<title>Question</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/quizes/main.css' %}">
+<script type="text/javascript" src="{% static 'js/quizes/main.js' %}"></script>
+{% endblock %} 
+
+{% block navbar %} 
+  {% with variant='dark' %} 
+    {{ block.super }} 
+  {% endwith %} 
+{% endblock navbar %} 
+
+{% block content %}
+<div class="main-content">
+    <div class="content">
+        <!-- Modal -->
+        <div class="modal fade" id="questionStartModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="exampleModalLabel">Deteksi Mandiri</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modal-body-confirm"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                        <button type="button" id="start-button" class="btn btn-success">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <!-- Message -->
+            {% if messages %}
+                {% for message in messages %}           
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn btn-close" data-bs-dismiss="alert" aria-label=""Close></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <!-- Assessment content -->
+        <div class="h3">{{quiz.name}}</div>
+        <hr>
+        <div class="sub-content">
+            {% for q in questions %}
+                <div class="wrapper">
+                    <p class="h6">{{q.text}}</p>
+                </div>
+                <div class="wrapper">
+                    <button 
+                        class="edit-question-btn btn-sm btn-link btn btn-outline-info" 
+                        data-pk="{{q.pk}}" 
+                        data-questions="{{q.text}}">
+                        Edit
+                    </button>
+                    <button
+                        class="delete-question-btn btn-link btn-sm btn btn-outline-danger" 
+                        data-pk="{{q.pk}}" 
+                        data-questions="{{q.text}}"
+                        data-action="delete-question"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#questionStartModel">
+                        Delete
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+        <div>
+              <div>
+                  <hr> 
+                  <button id="goback2" class="btn btn-danger">Go Back</button>
+              </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

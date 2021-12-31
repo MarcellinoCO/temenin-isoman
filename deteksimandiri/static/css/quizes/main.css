@@ -1,0 +1,45 @@
+.main-content {
+  text-align: center;
+}
+
+.content {
+  padding-top: 1em;
+  padding-left: 8em;
+  padding-right: 8em;
+  margin-top: 80px;
+}
+
+#modal-body-confirm {
+  text-align: left;
+}
+
+.disp_none {
+  display: none;
+}
+
+.text-muted {
+  font-size: 1rem;
+}
+
+.modal-body {
+  font-size: 1.1rem;
+}
+
+.sub-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.alert-info {
+  background: #BCCC9A;
+  padding: 0px;
+  text-align: center;
+  color: black;
+  font-weight: bold;
+}
+
+div .edit-btn, div .delete-btn, div .see-btn, div .edit-question-btn , div .delete-question-btn {
+  padding: 1px;
+  padding-left: 10px;
+  padding-right: 10px;
+}

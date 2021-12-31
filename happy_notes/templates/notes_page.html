@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>HappyNotes</title>
+
+<script 
+    src="{% static '/js/notes_page.js' %}" 
+    defer
+></script>
+
+<!-- CSS Stylesheet -->
+<link 
+    rel="stylesheet" 
+    href="{% static '/css/style.css' %}" />
+
+<!-- jQuery -->
+<script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"
+></script>
+
+<!-- Custom JS -->
+<script 
+    src="{% static '/js/function.js' %}" 
+    defer
+></script>
+{% block scripts %} {% endblock scripts %}
+
+{% endblock %}
+
+{% block navbar %}
+  {% with variant='dark' %}
+    {{ block.super }}
+  {% endwith %}
+{% endblock navbar %}
+
+{% block content %}
+
+<!-- Modal -->
+<div class="modal fade" id="addNotesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Create Note</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="note-form" class="text-center">
+                {% if user.is_authenticated %}
+
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                        <div class="fieldWrapper">
+                            {{ field.errors }}
+                            
+                            <p>{{ field.label_tag }} <br> {{ field }}</p>
+                        </div>
+                    {% endfor %}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">+ add</button>
+                    </div>
+
+                {% else %}
+                <p>Login untuk menambahkan note! ^_^</p>
+
+                {% endif %}
+                
+            </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="container z-index-3 my-8">
+    <div id="spinner-box">
+        <div id="spinner-border" class="not-visible" role="status">
+        </div>
+    </div>
+
+    <div id="alert-box">
+    
+    </div>
+
+    <p>Send your Happy Notes to cheering up those who in Isoman ヽ(✿ﾟ▽ﾟ)ノ</p>
+    <button type="button" class="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#addNotesModal">
+        add note!
+    </button>
+
+    <div class="row" id="notes-box">
+
+    </div>
+</div>
+{% endblock %}

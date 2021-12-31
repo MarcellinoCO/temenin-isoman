@@ -1,4 +1,5 @@
 from django.urls import path
+
 from .views import delete_obat, index, json, add, add_forms, edit_obat, add_from_flutter
 
 urlpatterns = [
