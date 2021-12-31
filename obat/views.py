@@ -66,7 +66,7 @@ def add_from_flutter(request):
             obat = Obat(penyakit=penyakit, penjelasan=penjelasan, daftar_obat=daftar_obat)
             obat.save()
             return HttpResponse("Successful", status=200)
-        except Obat.DoesNotExist:
+        except Exception:
             print("An error occurred")
             return HttpResponse("An error occurred", status=400, content_type="text/plain")
     return HttpResponse("Must use POST Method", status=405, content_type="text/plain")
