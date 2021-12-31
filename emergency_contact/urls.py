@@ -9,6 +9,7 @@ urlpatterns = [
     path('add-rs', add_rs),
     path('daerah_json',  daerah_json),
     path('rs_json',  rs_json),
+    path('daerah_json/<id>', rs_json),
     path('update_rs/<str:pk>/',  update_rs),
     path('hapus_rs/<str:pk>/',  hapus_rs),
     path('update_daerah/<str:pk>/',  update_daerah),

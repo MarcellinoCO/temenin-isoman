@@ -87,6 +87,11 @@ def hapus_daerah(request, pk):
     row.delete()
     return HttpResponseRedirect('/emergency-contact/add-daerah')
 
+def rs_json(request, id):
+    data = serializers.serialize(
+        'json', RumahSakit.objects.filter(daerah=id))
+    return HttpResponse(data, content_type="application/json")
+
 @csrf_exempt
 def add_rs_from_flutter(request):
     body_unicode = request.body.decode('utf-8')
